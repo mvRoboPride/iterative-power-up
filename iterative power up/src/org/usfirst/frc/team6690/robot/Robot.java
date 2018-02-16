@@ -119,9 +119,10 @@ public class Robot extends IterativeRobot {
     		
     		double rightStickValue = liftStick.getRawAxis(5);
     		liftSpark.set(rightStickValue);
-			
-    		double (leftTriggerValue) = driveStick.getRawAxis(3);
-    		endSpark.set(leftTriggerValue);
+   
+    		endSpark.set(driveStick.getRawAxis(3)); 
+    		endSpark.set(driveStick.getRawAxis(4));
+    		
 			}
 		}
 	}}
