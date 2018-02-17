@@ -7,17 +7,24 @@
 
 package org.usfirst.frc.team6690.robot;
 
-import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.Trigger;
-//egit 
+
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DigitalInput;
+
+import edu.wpi.first.wpilibj.Spark;
+
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.Joystick;
+
+
+
 /**
  * The VM is configured to automatically run this class, and to call the
  * functions corresponding to each mode, as described in the IterativeRobot
@@ -32,8 +39,13 @@ public class Robot extends IterativeRobot {
 		RobotDrive myDrive;
 		Joystick driveStick;
 		Joystick liftStick = new Joystick(1);
+		JoystickButton A;
+		JoystickButton B;
 		Spark liftSpark = new Spark(6);
 		Spark endSpark = new Spark(5);
+		DigitalInput endSwitch;
+		
+		
 		
 		PowerDistributionPanel pdp = new PowerDistributionPanel();
 		
@@ -52,7 +64,10 @@ public class Robot extends IterativeRobot {
 		myDrive = new RobotDrive(1,2,3,4); //Arcade Drive
     	driveStick = new Joystick(1); //Arcade Drive
     	
-
+    	A = new JoystickButton(driveStick,1);
+    	B = new JoystickButton(driveStick,2);
+    	
+    	endSwitch = new DigitalInput(0);
     	
 	}
 
@@ -118,13 +133,24 @@ public class Robot extends IterativeRobot {
     		Timer.delay(0.01);
     		
     		double rightStickValue = liftStick.getRawAxis(5);
-    		liftSpark.set(rightStickValue);
+    		//liftSpark.set(rightStickValue);
    
-    		endSpark.set(driveStick.getRawAxis(3)); 
-    		endSpark.set(driveStick.getRawAxis(4));
-    		
+    		if(A.get()) {
+    		    endSpark.set(1);
+    		} else if (B.get()) {
+    			endSpark.set(-1);
+    		} else {
+    			endSpark.set(0);
+			}
+    		if(endSwitch.get()){
+	    		liftSpark.set(0);
+	    	} else {
+	    		liftSpark.set(rightStickValue);
+	    	}
+	      Timer.delay(0.01); 
 			}
 		}
-	}}
+	}
+}
 		
 		
