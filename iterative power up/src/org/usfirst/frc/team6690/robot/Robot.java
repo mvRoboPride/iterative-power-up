@@ -7,21 +7,18 @@
 
 package org.usfirst.frc.team6690.robot;
 
-import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Timer;
-
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
-
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
-
-import edu.wpi.first.wpilibj.Spark;
-
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Spark;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 
 
@@ -37,16 +34,19 @@ public class Robot extends IterativeRobot {
 	
 		@SuppressWarnings("deprecation")
 		RobotDrive myDrive;
+		
 		Joystick driveStick;
 		Joystick liftStick = new Joystick(1);
 		JoystickButton A;
 		JoystickButton B;
-		Spark liftSpark = new Spark(6);
+		JoystickButton rTrig;
+		JoystickButton lTrig;
+		
+		Spark liftSpark = new Spark(0);
 		Spark endSpark = new Spark(5);
+		
 		DigitalInput endSwitch;
-		
-		
-		
+		private ADXRS450_Gyro Gyro;
 		PowerDistributionPanel pdp = new PowerDistributionPanel();
 		
 		
@@ -57,7 +57,12 @@ public class Robot extends IterativeRobot {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void robotInit() {
-		CameraServer.getInstance().startAutomaticCapture(); 
+		UsbCamera Camera = CameraServer.getInstance().startAutomaticCapture(0); //usb camera
+		Camera.setFPS(35);
+		Camera.setResolution(640, 640);
+		UsbCamera Camera2 = CameraServer.getInstance().startAutomaticCapture(1);
+		Camera2.setFPS(35);
+		Camera2.setResolution(640, 640);
 		
 		pdp.clearStickyFaults();
 		
@@ -66,8 +71,12 @@ public class Robot extends IterativeRobot {
     	
     	A = new JoystickButton(driveStick,1);
     	B = new JoystickButton(driveStick,2);
+    	lTrig = new JoystickButton(driveStick, 3);
+    	rTrig = new JoystickButton(driveStick, 4);
     	
     	endSwitch = new DigitalInput(0);
+    	
+    	Gyro = new ADXRS450_Gyro();
     	
 	}
 
@@ -131,6 +140,7 @@ public class Robot extends IterativeRobot {
 		{while (isOperatorControl() && isEnabled()) {
     		myDrive.arcadeDrive(driveStick);
     		Timer.delay(0.01);
+    			
     		
     		double rightStickValue = liftStick.getRawAxis(5);
     		//liftSpark.set(rightStickValue);
