@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 
@@ -42,12 +44,19 @@ public class Robot extends IterativeRobot {
 		JoystickButton rTrig;
 		JoystickButton lTrig;
 		
-		Spark liftSpark = new Spark(0);
-		Spark endSpark = new Spark(5);
+		Spark liftSpark = new Spark(5);
+		Spark endSpark = new Spark(0);
 		
 		DigitalInput endSwitch;
 		private ADXRS450_Gyro Gyro;
 		PowerDistributionPanel pdp = new PowerDistributionPanel();
+		
+		final String baseline = "Baseline";
+		final String leftAuto = "Left Auto";
+		final String rightAuto = "Right Auto";
+		final String centerAuto = "Center Auto";
+		String autoSelected;
+		SendableChooser<String> chooser = new SendableChooser<>();
 		
 		
 	/**
@@ -78,6 +87,12 @@ public class Robot extends IterativeRobot {
     	
     	Gyro = new ADXRS450_Gyro();
     	
+    	chooser.addDefault("Baseline", baseline);
+		chooser.addObject("Center Auto", centerAuto);
+		chooser.addObject("Left Auto", leftAuto);
+		chooser.addObject("Right Auto", rightAuto);
+		SmartDashboard.putData("Auto choices", chooser);
+    	
 	}
 
 	/**
@@ -93,9 +108,23 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+
+       
+       }
+
+	/**
+	 * This function is called periodically during autonomous.
+	 */
+	@Override
+	public void autonomousPeriodic() {
+	/*	autoSelected = chooser.getSelected();
+		System.out.println("Auto selected: " + autoSelected);
+		
 		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
-                if(gameData.length() > 0)
+		switch (autoSelected) {
+		case leftAuto:
+        if(gameData.length() > 0)
                 {
 		  if(gameData.charAt(0) == 'L')
 		  {
@@ -117,18 +146,86 @@ public class Robot extends IterativeRobot {
 		  } else {
 			//Put right auto code here
 		  }
-		  
-                }
-	}
-
-	/**
-	 * This function is called periodically during autonomous.
-	 */
-	@Override
-	public void autonomousPeriodic() {
-		
-		
-	}
+			break;
+		case centerAuto: 
+			   if(gameData.length() > 0)
+               {
+		  if(gameData.charAt(0) == 'L')
+		  {
+			myDrive.arcadeDrive(1, .5);
+			Timer.delay(1);
+			myDrive.arcadeDrive(1, .5);
+			Timer.delay(.25);
+			
+		  } else {
+			//Put right auto code here
+		  }
+		  if(gameData.charAt(0) == 'R')
+		  {
+			myDrive.arcadeDrive(1, -.5);
+			Timer.delay(1);
+			myDrive.arcadeDrive(1, .5);
+			Timer.delay(.25);
+			
+		  } else {
+			//Put right auto code here
+		  }
+			break;
+		case rightAuto: 
+			   if(gameData.length() > 0)
+               {
+		  if(gameData.charAt(0) == 'L')
+		  {
+			myDrive.arcadeDrive(1, .5);
+			Timer.delay(1);
+			myDrive.arcadeDrive(1, .5);
+			Timer.delay(.25);
+			
+		  } else {
+			//Put right auto code here
+		  }
+		  if(gameData.charAt(0) == 'R')
+		  {
+			myDrive.arcadeDrive(1, -.5);
+			Timer.delay(1);
+			myDrive.arcadeDrive(1, .5);
+			Timer.delay(.25);
+			
+		  } else {
+			//Put right auto code here
+		  }
+			break;
+		case baseline:
+			   if(gameData.length() > 0)
+               {
+		  if(gameData.charAt(0) == 'L')
+		  {
+			myDrive.arcadeDrive(1, .5);
+			Timer.delay(1);
+			myDrive.arcadeDrive(1, .5);
+			Timer.delay(.25);
+			
+		  } else {
+			//Put right auto code here
+		  }
+		  if(gameData.charAt(0) == 'R')
+		  {
+			myDrive.arcadeDrive(1, -.5);
+			Timer.delay(1);
+			myDrive.arcadeDrive(1, .5);
+			Timer.delay(.25);
+			
+		  } else {
+			//Put right auto code here
+		  }
+			break;
+		default:
+			// Put default auto code here
+			break;
+		*/
+			
+		}
+	//}
 
 	/**
 	 * This function is called periodically during operator control.
@@ -143,7 +240,7 @@ public class Robot extends IterativeRobot {
     			
     		
     		double rightStickValue = liftStick.getRawAxis(5);
-    		//liftSpark.set(rightStickValue);
+    	//	liftSpark.set(rightStickValue);
    
     		if(A.get()) {
     		    endSpark.set(1);
@@ -154,6 +251,8 @@ public class Robot extends IterativeRobot {
 			}
     		if(endSwitch.get()){
 	    		liftSpark.set(0);
+	    		Timer.delay(1);
+	    		liftSpark.set(rightStickValue);
 	    	} else {
 	    		liftSpark.set(rightStickValue);
 	    	}
