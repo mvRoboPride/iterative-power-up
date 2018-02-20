@@ -11,6 +11,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -113,16 +114,9 @@ public class Robot extends IterativeRobot {
 	 * SendableChooser make sure to add them to the chooser code above as well.
 	 */
 	@Override
-	public void autonomousInit() {
-			//myDrive.arcadeDrive(-1, -.45);
-			//Timer.delay(1.5); 3 feet 
-	//	myDrive.arcadeDrive(-1, 1);
-		//Timer.delay(2);
-    		liftSpark.set(1);
-    		Timer.delay(4); //11.75 second full climb 
-    		liftSpark.set(0);  
+	public void autonomousInit() { //11.75 second full climb
 		
-       /*	autoSelected = chooser.getSelected();
+       	autoSelected = chooser.getSelected();
 		System.out.println("Auto selected: " + autoSelected);
 		
 		String gameData;
@@ -133,101 +127,154 @@ public class Robot extends IterativeRobot {
                 {
 		  if(gameData.charAt(0) == 'L')
 		  {
-			myDrive.arcadeDrive(1, .5);
-			Timer.delay(1);
-			myDrive.arcadeDrive(1, .5);
-			Timer.delay(.25);
+			myDrive.arcadeDrive(-1, .45); //drives straight
+			Timer.delay(10);
+			myDrive.arcadeDrive(-1, 1); //turns
+			Timer.delay(3);
+			myDrive.arcadeDrive(0, 0);
+			liftSpark.set(1);//raises lift
+			Timer.delay(5);
+			liftSpark.set(0);
+			endSpark.set(1);//launches cube
+			Timer.delay(.5);
+			endSpark.set(0);
+			liftSpark.set(-1); //lowers lift
+			Timer.delay(4);
+			liftSpark.set(0);
 			
-		  } else {
-			//Put right auto code here
-		  }
-		  if(gameData.charAt(0) == 'R')
-		  {
-			myDrive.arcadeDrive(1, -.5);
-			Timer.delay(1);
-			myDrive.arcadeDrive(1, .5);
-			Timer.delay(.25);
-			
-		  } else {
-			//Put right auto code here
+		  } else if(gameData.charAt(0) == 'R') { // right  
+				myDrive.arcadeDrive(-1, .45); //drives straight
+				Timer.delay(10);
+				myDrive.arcadeDrive(-1, 1); //turns
+				Timer.delay(3);
+				myDrive.arcadeDrive(0, 0);
+				myDrive.arcadeDrive(-1, .45); //straight
+				Timer.delay(9);
+				myDrive.arcadeDrive(-1, 1); //turns
+				Timer.delay(3);
+				myDrive.arcadeDrive(-1, 1);//straight
+				Timer.delay(1);
+				myDrive.arcadeDrive(0, 0);
+				liftSpark.set(1);//raises lift
+				Timer.delay(5);
+				liftSpark.set(0);
+				endSpark.set(1);//launches cube
+				Timer.delay(.5);
+				endSpark.set(0);
+				liftSpark.set(-1); //lowers lift
+				Timer.delay(4);
+				liftSpark.set(0);
 		  }
 			break;
+                }
 		case centerAuto: 
 			   if(gameData.length() > 0)
                {
 		  if(gameData.charAt(0) == 'L')
 		  {
-			myDrive.arcadeDrive(1, .5);
-			Timer.delay(1);
-			myDrive.arcadeDrive(1, .5);
-			Timer.delay(.25);
+				myDrive.arcadeDrive(-1, 1); //turns
+				Timer.delay(3);
+				myDrive.arcadeDrive(0, 0);
+				myDrive.arcadeDrive(-1, .45); //straight
+				Timer.delay(7);
+				myDrive.arcadeDrive(-1, 1); //turns
+				Timer.delay(3);
+				myDrive.arcadeDrive(-1, .45);//straight
+				Timer.delay(2);
+				myDrive.arcadeDrive(-1, 1); //turns
+				Timer.delay(3);
+				myDrive.arcadeDrive(-1, .45); //straight
+				Timer.delay(2);
+				myDrive.arcadeDrive(0, 0);
+				liftSpark.set(1);//raises lift
+				Timer.delay(5);
+				liftSpark.set(0);
+				endSpark.set(1);//launches cube
+				Timer.delay(.5);
+				endSpark.set(0);
+				liftSpark.set(-1); //lowers lift
+				Timer.delay(4);
+				liftSpark.set(0);
 			
-		  } else {
-			//Put right auto code here
-		  }
-		  if(gameData.charAt(0) == 'R')
-		  {
-			myDrive.arcadeDrive(1, -.5);
-			Timer.delay(1);
-			myDrive.arcadeDrive(1, .5);
-			Timer.delay(.25);
-			
-		  } else {
-			//Put right auto code here
-		  }
+		  } else if(gameData.charAt(0) == 'R') {
+			  myDrive.arcadeDrive(-1, -1); //turns
+				Timer.delay(3);
+				myDrive.arcadeDrive(0, 0);
+				myDrive.arcadeDrive(-1, .45); //straight
+				Timer.delay(7);
+				myDrive.arcadeDrive(-1, -1); //turns
+				Timer.delay(3);
+				myDrive.arcadeDrive(-1, .45);//straight
+				Timer.delay(2);
+				myDrive.arcadeDrive(-1, -1); //turns
+				Timer.delay(3);
+				myDrive.arcadeDrive(-1, .45); //straight
+				Timer.delay(2);
+				myDrive.arcadeDrive(0, 0);
+				liftSpark.set(1);//raises lift
+				Timer.delay(5);
+				liftSpark.set(0);
+				endSpark.set(1);//launches cube
+				Timer.delay(.5);
+				endSpark.set(0);
+				liftSpark.set(-1); //lowers lift
+				Timer.delay(4);
+				liftSpark.set(0);
+				}
 			break;
+               }
 		case rightAuto: 
 			   if(gameData.length() > 0)
                {
 		  if(gameData.charAt(0) == 'L')
 		  {
-			myDrive.arcadeDrive(1, .5);
-			Timer.delay(1);
-			myDrive.arcadeDrive(1, .5);
-			Timer.delay(.25);
+				myDrive.arcadeDrive(-1, .45); //drives straight
+				Timer.delay(10);
+				myDrive.arcadeDrive(-1, -1); //turns
+				Timer.delay(3);
+				myDrive.arcadeDrive(0, 0);
+				myDrive.arcadeDrive(-1, .45); //straight
+				Timer.delay(9);
+				myDrive.arcadeDrive(-1, -1); //turns
+				Timer.delay(3);
+				myDrive.arcadeDrive(-1, 1);//straight
+				Timer.delay(1);
+				myDrive.arcadeDrive(0, 0);
+				liftSpark.set(1);//raises lift
+				Timer.delay(5);
+				liftSpark.set(0);
+				endSpark.set(1);//launches cube
+				Timer.delay(.5);
+				endSpark.set(0);
+				liftSpark.set(-1); //lowers lift
+				Timer.delay(4);
+				liftSpark.set(0);
 			
-		  } else {
-			//Put right auto code here
-		  }
-		  if(gameData.charAt(0) == 'R')
-		  {
-			myDrive.arcadeDrive(1, -.5);
-			Timer.delay(1);
-			myDrive.arcadeDrive(1, .5);
-			Timer.delay(.25);
-			
-		  } else {
-			//Put right auto code here
-		  }
+		  } else if(gameData.charAt(0) == 'R')  {
+			  myDrive.arcadeDrive(-1, .45); //drives straight
+				Timer.delay(10);
+				myDrive.arcadeDrive(-1, -1); //turns
+				Timer.delay(3);
+				myDrive.arcadeDrive(0, 0);
+				liftSpark.set(1);//raises lift
+				Timer.delay(4);
+				liftSpark.set(0);
+				endSpark.set(1);//launches cube
+				Timer.delay(.5);
+				endSpark.set(0);
+				liftSpark.set(-1);
+				Timer.delay(4);
+				liftSpark.set(0);		  
+				}
 			break;
+               }
 		case baseline:
-			   if(gameData.length() > 0)
-               {
-		  if(gameData.charAt(0) == 'L')
-		  {
-			myDrive.arcadeDrive(1, .5);
-			Timer.delay(1);
-			myDrive.arcadeDrive(1, .5);
-			Timer.delay(.25);
-			
-		  } else {
-			//Put right auto code here
-		  }
-		  if(gameData.charAt(0) == 'R')
-		  {
-			myDrive.arcadeDrive(1, -.5);
-			Timer.delay(1);
-			myDrive.arcadeDrive(1, .5);
-			Timer.delay(.25);
-			
-		  } else {
-			//Put right auto code here
-		  }
-			break;
 		default:
-			// Put default auto code here
+			myDrive.arcadeDrive(-1, .45);
+			Timer.delay(10);
+			myDrive.arcadeDrive(0, 0);
 			break;
-		*/
+          }
        }
 
 	/**
