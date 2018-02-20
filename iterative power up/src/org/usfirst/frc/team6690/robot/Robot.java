@@ -124,7 +124,7 @@ public class Robot extends IterativeRobot {
 		switch (autoSelected) {
 		case leftAuto:
         if(gameData.length() > 0)
-                {
+                { 
 		  if(gameData.charAt(0) == 'L')
 		  {
 			myDrive.arcadeDrive(-1, .45); //drives straight
