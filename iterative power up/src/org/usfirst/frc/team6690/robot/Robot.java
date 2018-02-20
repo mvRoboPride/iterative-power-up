@@ -88,7 +88,7 @@ public class Robot extends IterativeRobot {
     	lTrig = new JoystickButton(driveStick, 3);
     	rTrig = new JoystickButton(driveStick, 4);
     	
-    	xbox = new XboxController(0);
+    	xbox = new XboxController(1);
     	
     	endSwitch = new DigitalInput(0);
     	
@@ -310,16 +310,18 @@ public class Robot extends IterativeRobot {
     			endSpark.set(0);
 			}*/
     		if(endSwitch.get()){
-	    		liftSpark.set(0);
-	    		Timer.delay(1);
+	    		liftSpark.set(-2);
+	    		Timer.delay(.1);
 	    		liftSpark.set(rightStickValue);
 	    	} else {
 	    		liftSpark.set(rightStickValue);
 	    	}
     		if (xbox.getTriggerAxis(Hand.kRight) >= .05) {
-				liftSpark.set(xbox.getTriggerAxis(Hand.kRight));
+				endSpark.set(xbox.getTriggerAxis(Hand.kRight));
     		} else if (xbox.getTriggerAxis(Hand.kLeft) >= .05) {
-    			liftSpark.set(xbox.getTriggerAxis(Hand.kLeft));
+    			endSpark.set(xbox.getTriggerAxis(Hand.kLeft));
+    		} else {
+    			endSpark.set(0);
     		}
 	      Timer.delay(0.01); 
 			}
