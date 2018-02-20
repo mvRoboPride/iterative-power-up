@@ -113,8 +113,8 @@ public class Robot extends IterativeRobot {
 	//	myDrive.arcadeDrive(-1, 1);
 		//Timer.delay(2);
     		liftSpark.set(1);
-    		Timer.delay(4); //11.75 second full climb
-    		liftSpark.set(0); 
+    		Timer.delay(4); //11.75 second full climb 
+    		liftSpark.set(0);  
 		
        /*	autoSelected = chooser.getSelected();
 		System.out.println("Auto selected: " + autoSelected);
