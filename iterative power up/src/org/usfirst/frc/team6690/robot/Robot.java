@@ -108,16 +108,15 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-
-       
-       }
-
-	/**
-	 * This function is called periodically during autonomous.
-	 */
-	@Override
-	public void autonomousPeriodic() {
-	/*	autoSelected = chooser.getSelected();
+			//myDrive.arcadeDrive(-1, -.45);
+			//Timer.delay(1.5); 3 feet 
+	//	myDrive.arcadeDrive(-1, 1);
+		//Timer.delay(2);
+    		liftSpark.set(1);
+    		Timer.delay(4); //11.75 second full climb
+    		liftSpark.set(0); 
+		
+       /*	autoSelected = chooser.getSelected();
 		System.out.println("Auto selected: " + autoSelected);
 		
 		String gameData;
@@ -223,6 +222,14 @@ public class Robot extends IterativeRobot {
 			// Put default auto code here
 			break;
 		*/
+       }
+
+	/**
+	 * This function is called periodically during autonomous.
+	 */
+	@Override
+	public void autonomousPeriodic() {
+	
 			
 		}
 	//}
