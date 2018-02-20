@@ -11,7 +11,7 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.XboxController;
 
 
 
@@ -43,6 +45,8 @@ public class Robot extends IterativeRobot {
 		JoystickButton B;
 		JoystickButton rTrig;
 		JoystickButton lTrig;
+		
+		XboxController xbox;
 		
 		Spark liftSpark = new Spark(5);
 		Spark endSpark = new Spark(0);
@@ -83,6 +87,8 @@ public class Robot extends IterativeRobot {
     	lTrig = new JoystickButton(driveStick, 3);
     	rTrig = new JoystickButton(driveStick, 4);
     	
+    	xbox = new XboxController(0);
+    	
     	endSwitch = new DigitalInput(0);
     	
     	Gyro = new ADXRS450_Gyro();
@@ -92,7 +98,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Left Auto", leftAuto);
 		chooser.addObject("Right Auto", rightAuto);
 		SmartDashboard.putData("Auto choices", chooser);
-    	
+		
 	}
 
 	/**
@@ -249,13 +255,13 @@ public class Robot extends IterativeRobot {
     		double rightStickValue = liftStick.getRawAxis(5);
     	//	liftSpark.set(rightStickValue);
    
-    		if(A.get()) {
+    	/*	if(A.get()) {
     		    endSpark.set(1);
     		} else if (B.get()) {
     			endSpark.set(-1);
     		} else {
     			endSpark.set(0);
-			}
+			}*/
     		if(endSwitch.get()){
 	    		liftSpark.set(0);
 	    		Timer.delay(1);
@@ -263,6 +269,11 @@ public class Robot extends IterativeRobot {
 	    	} else {
 	    		liftSpark.set(rightStickValue);
 	    	}
+    		if (xbox.getTriggerAxis(Hand.kRight) >= .05) {
+				liftSpark.set(xbox.getTriggerAxis(Hand.kRight));
+    		} else if (xbox.getTriggerAxis(Hand.kLeft) >= .05) {
+    			liftSpark.set(xbox.getTriggerAxis(Hand.kLeft));
+    		}
 	      Timer.delay(0.01); 
 			}
 		}
