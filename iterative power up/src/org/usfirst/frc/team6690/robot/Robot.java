@@ -42,10 +42,6 @@ public class Robot extends IterativeRobot {
 		
 		Joystick driveStick;
 		Joystick liftStick = new Joystick(1);
-		JoystickButton A;
-		JoystickButton B;
-		JoystickButton rTrig;
-		JoystickButton lTrig;
 		
 		XboxController xbox;
 		
@@ -74,19 +70,11 @@ public class Robot extends IterativeRobot {
 		UsbCamera Camera = CameraServer.getInstance().startAutomaticCapture(0); //usb camera
 		Camera.setFPS(35);
 		Camera.setResolution(640, 640);
-		UsbCamera Camera2 = CameraServer.getInstance().startAutomaticCapture(1);
-		Camera2.setFPS(35);
-		Camera2.setResolution(640, 640);
 		
 		pdp.clearStickyFaults();
 		
 		myDrive = new RobotDrive(1,2,3,4); //Arcade Drive
     	driveStick = new Joystick(1); //Arcade Drive
-    	
-    	A = new JoystickButton(driveStick,1);
-    	B = new JoystickButton(driveStick,2);
-    	lTrig = new JoystickButton(driveStick, 3);
-    	rTrig = new JoystickButton(driveStick, 4);
     	
     	xbox = new XboxController(1);
     	
@@ -128,9 +116,9 @@ public class Robot extends IterativeRobot {
 		  if(gameData.charAt(0) == 'L')
 		  {
 			myDrive.arcadeDrive(-1, .45); //drives straight
-			Timer.delay(10);
+			Timer.delay(7);
 			myDrive.arcadeDrive(-1, 1); //turns
-			Timer.delay(3);
+			Timer.delay(2);
 			myDrive.arcadeDrive(0, 0);
 			liftSpark.set(1);//raises lift
 			Timer.delay(5);
@@ -144,14 +132,14 @@ public class Robot extends IterativeRobot {
 			
 		  } else if(gameData.charAt(0) == 'R') { // right  
 				myDrive.arcadeDrive(-1, .45); //drives straight
-				Timer.delay(10);
+				Timer.delay(7);
 				myDrive.arcadeDrive(-1, 1); //turns
 				Timer.delay(3);
 				myDrive.arcadeDrive(0, 0);
 				myDrive.arcadeDrive(-1, .45); //straight
-				Timer.delay(9);
+				Timer.delay(6);
 				myDrive.arcadeDrive(-1, 1); //turns
-				Timer.delay(3);
+				Timer.delay(2);
 				myDrive.arcadeDrive(-1, 1);//straight
 				Timer.delay(1);
 				myDrive.arcadeDrive(0, 0);
@@ -172,22 +160,21 @@ public class Robot extends IterativeRobot {
                {
 		  if(gameData.charAt(0) == 'L')
 		  {
-				myDrive.arcadeDrive(-1, 1); //turns
-				Timer.delay(3);
-				myDrive.arcadeDrive(0, 0);
+				myDrive.arcadeDrive(-1, -1); //turns
+				Timer.delay(2);
 				myDrive.arcadeDrive(-1, .45); //straight
-				Timer.delay(7);
+				Timer.delay(4);
 				myDrive.arcadeDrive(-1, 1); //turns
-				Timer.delay(3);
+				Timer.delay(1);
 				myDrive.arcadeDrive(-1, .45);//straight
 				Timer.delay(2);
 				myDrive.arcadeDrive(-1, 1); //turns
-				Timer.delay(3);
+				Timer.delay(1);
 				myDrive.arcadeDrive(-1, .45); //straight
-				Timer.delay(2);
+				Timer.delay(1);
 				myDrive.arcadeDrive(0, 0);
 				liftSpark.set(1);//raises lift
-				Timer.delay(5);
+				Timer.delay(4);
 				liftSpark.set(0);
 				endSpark.set(1);//launches cube
 				Timer.delay(.5);
@@ -197,22 +184,21 @@ public class Robot extends IterativeRobot {
 				liftSpark.set(0);
 			
 		  } else if(gameData.charAt(0) == 'R') {
-			  myDrive.arcadeDrive(-1, -1); //turns
-				Timer.delay(3);
-				myDrive.arcadeDrive(0, 0);
+			  myDrive.arcadeDrive(-1, 1); //turns
+				Timer.delay(2);
 				myDrive.arcadeDrive(-1, .45); //straight
-				Timer.delay(7);
+				Timer.delay(4);
 				myDrive.arcadeDrive(-1, -1); //turns
-				Timer.delay(3);
+				Timer.delay(1);
 				myDrive.arcadeDrive(-1, .45);//straight
 				Timer.delay(2);
 				myDrive.arcadeDrive(-1, -1); //turns
-				Timer.delay(3);
+				Timer.delay(1);
 				myDrive.arcadeDrive(-1, .45); //straight
-				Timer.delay(2);
+				Timer.delay(1);
 				myDrive.arcadeDrive(0, 0);
 				liftSpark.set(1);//raises lift
-				Timer.delay(5);
+				Timer.delay(4);
 				liftSpark.set(0);
 				endSpark.set(1);//launches cube
 				Timer.delay(.5);
@@ -297,29 +283,15 @@ public class Robot extends IterativeRobot {
 		{while (isOperatorControl() && isEnabled()) {
     		myDrive.arcadeDrive(driveStick);
     		Timer.delay(0.01);
-    			
+   
     		
     		double rightStickValue = liftStick.getRawAxis(5);
-    	//	liftSpark.set(rightStickValue);
-   
-    	/*	if(A.get()) {
-    		    endSpark.set(1);
-    		} else if (B.get()) {
-    			endSpark.set(-1);
-    		} else {
-    			endSpark.set(0);
-			}*/
-    		if(endSwitch.get()){
-	    		liftSpark.set(-2);
-	    		Timer.delay(.1);
-	    		liftSpark.set(rightStickValue);
-	    	} else {
-	    		liftSpark.set(rightStickValue);
-	    	}
+    		liftSpark.set(rightStickValue);
+  
     		if (xbox.getTriggerAxis(Hand.kRight) >= .05) {
 				endSpark.set(xbox.getTriggerAxis(Hand.kRight));
     		} else if (xbox.getTriggerAxis(Hand.kLeft) >= .05) {
-    			endSpark.set(xbox.getTriggerAxis(Hand.kLeft));
+    			endSpark.set(xbox.getTriggerAxis(Hand.kLeft) * (-1));
     		} else {
     			endSpark.set(0);
     		}
