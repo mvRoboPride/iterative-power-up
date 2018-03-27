@@ -15,25 +15,17 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
-import edu.wpi.first.wpilibj.XboxController;
 
-
-
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the IterativeRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.properties file in the
- * project.
- */
 @SuppressWarnings({ "unused", "deprecation" })
 public class Robot extends IterativeRobot {
 	
@@ -52,6 +44,9 @@ public class Robot extends IterativeRobot {
 		private ADXRS450_Gyro Gyro;
 		PowerDistributionPanel pdp = new PowerDistributionPanel();
 		
+		double rotateToAngle;
+		
+		
 		final String baseline = "Baseline";
 		final String leftAuto = "Left Auto";
 		final String rightAuto = "Right Auto";
@@ -59,11 +54,8 @@ public class Robot extends IterativeRobot {
 		String autoSelected;
 		SendableChooser<String> chooser = new SendableChooser<>();
 		
+		PIDController turnController;
 		
-	/**
-	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
-	 */
 	@SuppressWarnings("deprecation")
 	@Override
 	public void robotInit() {
@@ -80,7 +72,9 @@ public class Robot extends IterativeRobot {
     	
     	endSwitch = new DigitalInput(0);
     	
-    	Gyro = new ADXRS450_Gyro();
+    	ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+    	gyro.reset();
+
     	
     	chooser.addDefault("Baseline", baseline);
 		chooser.addObject("Center Auto", centerAuto);
@@ -88,23 +82,25 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Right Auto", rightAuto);
 		SmartDashboard.putData("Auto choices", chooser);
 		
+		 final int gyroPort = 1;
+		
+		/* P, I, and D constants. Arbitrary */
+	    final double Kp = .3;
+	    final double Ki = .2;
+	    final double Kd = .1;
+	    
+	    final double kTolerance = 2f;
+	    
+	   
+	   turnController = new PIDController;
+		
 	}
 
-	/**
-	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable
-	 * chooser code works with the Java SmartDashboard. If you prefer the
-	 * LabVIEW Dashboard, remove all of the chooser code and uncomment the
-	 * getString line to get the auto name from the text box below the Gyro
-	 *
-	 * <p>You can add additional auto modes by adding additional comparisons to
-	 * the switch structure below with additional strings. If using the
-	 * SendableChooser make sure to add them to the chooser code above as well.
-	 */
 	@Override
 	public void autonomousInit() { //11.75 second full climb
+		turnController.setSetpoint(90.0f);
 		
-       	autoSelected = chooser.getSelected();
+      /* 	autoSelected = chooser.getSelected();
 		System.out.println("Auto selected: " + autoSelected);
 		
 		String gameData;
@@ -260,12 +256,9 @@ public class Robot extends IterativeRobot {
 			Timer.delay(10);
 			myDrive.arcadeDrive(0, 0);
 			break;
-          }
+          } */
        }
 
-	/**
-	 * This function is called periodically during autonomous.
-	 */
 	@Override
 	public void autonomousPeriodic() {
 	
@@ -273,9 +266,6 @@ public class Robot extends IterativeRobot {
 		}
 	//}
 
-	/**
-	 * This function is called periodically during operator control.
-	 */
 	@SuppressWarnings("deprecation")
 	@Override
 	public void teleopPeriodic() {
