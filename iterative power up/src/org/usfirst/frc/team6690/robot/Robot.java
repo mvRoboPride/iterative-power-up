@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 @SuppressWarnings({ "unused", "deprecation" })
-public class Robot extends IterativeRobot {
+public class Robot extends IterativeRobot implements PIDOutput {
 	
 		@SuppressWarnings("deprecation")
 		RobotDrive myDrive;
@@ -39,9 +39,21 @@ public class Robot extends IterativeRobot {
 		
 		Spark liftSpark = new Spark(5);
 		Spark endSpark = new Spark(0);
+		public static int gyroPort = 1;
+		
+		/* P, I, and D constants. Arbitrary */
+	    public static final double Kp = .3;
+	    public static final double Ki = .2;
+	    public static final double Kd = .1;
+	    
+	    /* Tolerance, or how many degrees the robot can be off it's heading. */
+	    public static final double kTolerance = 2f;
+	    
+	    public static PIDController turnController;
+
 		
 		DigitalInput endSwitch;
-		private ADXRS450_Gyro Gyro;
+		private ADXRS450_Gyro gyro;
 		PowerDistributionPanel pdp = new PowerDistributionPanel();
 		
 		double rotateToAngle;
@@ -54,11 +66,18 @@ public class Robot extends IterativeRobot {
 		String autoSelected;
 		SendableChooser<String> chooser = new SendableChooser<>();
 		
-		PIDController turnController;
+		
+
 		
 	@SuppressWarnings("deprecation")
 	@Override
 	public void robotInit() {
+		turnController = new PIDController(Kp, Ki, Kd, gyro, (PIDOutput) myDrive);
+		turnController.setInputRange(-180f, 180f); /* Input from gyro with wrapping */
+		turnController.setOutputRange(-1, 1); /* Max and min voltage for motors */
+		turnController.setAbsoluteTolerance(kTolerance);
+		turnController.setContinuous(true);
+		turnController.disable();
 		UsbCamera Camera = CameraServer.getInstance().startAutomaticCapture(0); //usb camera
 		Camera.setFPS(35);
 		Camera.setResolution(640, 640);
@@ -81,25 +100,14 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Left Auto", leftAuto);
 		chooser.addObject("Right Auto", rightAuto);
 		SmartDashboard.putData("Auto choices", chooser);
-		
-		 final int gyroPort = 1;
-		
-		/* P, I, and D constants. Arbitrary */
-	    final double Kp = .3;
-	    final double Ki = .2;
-	    final double Kd = .1;
 	    
-	    final double kTolerance = 2f;
-	    
-	   
-	   turnController = new PIDController;
 		
 	}
 
 	@Override
 	public void autonomousInit() { //11.75 second full climb
 		turnController.setSetpoint(90.0f);
-		
+		turnController.enable();
       /* 	autoSelected = chooser.getSelected();
 		System.out.println("Auto selected: " + autoSelected);
 		
@@ -288,6 +296,12 @@ public class Robot extends IterativeRobot {
 	      Timer.delay(0.01); 
 			}
 		}
+	}
+
+	@Override
+	public void pidWrite(double output) {
+		// TODO Auto-generated method stub
+		
 	}
 }
 		
