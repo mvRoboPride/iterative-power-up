@@ -10,8 +10,8 @@ package org.usfirst.frc.team6690.robot;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -19,10 +19,10 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -35,6 +35,9 @@ public class Robot extends IterativeRobot implements PIDOutput {
 		Joystick liftStick = new Joystick(1);
 		
 		XboxController xbox;
+		
+		Compressor comp = new Compressor(0);
+		Solenoid solenoid = new Solenoid(0);
 		
 		Spark liftSpark = new Spark(5);
 		Spark endSpark = new Spark(0);
@@ -70,6 +73,9 @@ public class Robot extends IterativeRobot implements PIDOutput {
 		
 	@Override
 	public void robotInit() {
+		
+		comp.setClosedLoopControl(true);
+		solenoid.set(false);
 		
 		turnController = new PIDController(Kp, Ki, Kd, gyro, (PIDOutput) myDrive);
 		turnController.setInputRange(-180f, 180f); /* Input from gyro with wrapping */
@@ -285,7 +291,15 @@ public class Robot extends IterativeRobot implements PIDOutput {
     		
     		double rightStickValue = liftStick.getRawAxis(5);
     		liftSpark.set(rightStickValue);
-  
+    		
+    		if (xbox.getAButtonPressed()) {
+    			solenoid.set(true);
+    		}
+    		if (xbox.getAButtonReleased()) {
+    			solenoid.set(false);
+    		} else {
+    			solenoid.set(false);
+    		}
     		if (xbox.getTriggerAxis(Hand.kRight) >= .05) {
 				endSpark.set(xbox.getTriggerAxis(Hand.kRight));
     		} else if (xbox.getTriggerAxis(Hand.kLeft) >= .05) {
