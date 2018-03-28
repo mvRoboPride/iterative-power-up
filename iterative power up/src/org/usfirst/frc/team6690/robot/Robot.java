@@ -40,10 +40,10 @@ public class Robot extends IterativeRobot implements PIDOutput {
 		Spark endSpark = new Spark(0);
 		public static int gyroPort = 1;
 		
-		/* P, I, and D constants. Arbitrary */
-	    public static final double Kp = .3;
+		
+	    public static final double Kp = .2;
 	    public static final double Ki = .2;
-	    public static final double Kd = .1;
+	    public static final double Kd = .2;
 	    
 	    /* Tolerance, or how many degrees the robot can be off it's heading. */
 	    public static final double kTolerance = 2f;
@@ -70,12 +70,14 @@ public class Robot extends IterativeRobot implements PIDOutput {
 		
 	@Override
 	public void robotInit() {
+		
 		turnController = new PIDController(Kp, Ki, Kd, gyro, (PIDOutput) myDrive);
 		turnController.setInputRange(-180f, 180f); /* Input from gyro with wrapping */
 		turnController.setOutputRange(-1, 1); /* Max and min voltage for motors */
 		turnController.setAbsoluteTolerance(kTolerance);
 		turnController.setContinuous(true);
 		turnController.disable();
+		
 		UsbCamera Camera = CameraServer.getInstance().startAutomaticCapture(0); //usb camera
 		Camera.setFPS(35);
 		Camera.setResolution(640, 640);
