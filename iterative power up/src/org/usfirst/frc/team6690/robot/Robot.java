@@ -280,8 +280,7 @@ public class Robot extends IterativeRobot implements PIDOutput {
 		}
 	//}
 
-	@SuppressWarnings("deprecation")
-	@Override
+
 	public void teleopPeriodic() {
 		
 		{while (isOperatorControl() && isEnabled()) {
