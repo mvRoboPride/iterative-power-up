@@ -29,7 +29,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 @SuppressWarnings({ "unused", "deprecation" })
 public class Robot extends IterativeRobot implements PIDOutput {
 	
-		@SuppressWarnings("deprecation")
 		RobotDrive myDrive;
 		
 		Joystick driveStick;
@@ -69,7 +68,6 @@ public class Robot extends IterativeRobot implements PIDOutput {
 		
 
 		
-	@SuppressWarnings("deprecation")
 	@Override
 	public void robotInit() {
 		turnController = new PIDController(Kp, Ki, Kd, gyro, (PIDOutput) myDrive);
