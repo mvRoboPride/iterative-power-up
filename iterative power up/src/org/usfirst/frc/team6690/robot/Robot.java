@@ -100,15 +100,22 @@ public class Robot extends IterativeRobot implements PIDOutput {
 		autoTimer.start();
 		autoSelected = chooser.getSelected();
 		System.out.println("Auto selected: " + autoSelected);
-
+	}
+		
+	@Override
+	public void autonomousPeriodic() {
 		String gameData;
 		gameData = DriverStation.getInstance().getGameSpecificMessage();
-		switch (autoSelected) {
-		case leftAuto:
-			if (gameData.length() > 0) {
+		switch(autoSelected) {
+    	case leftAuto:
+    		if (gameData.length() > 0) {
 				if (gameData.charAt(0) == 'L') {
+					autoTimer.reset();
+					autoTimer.start();
+					if (autoTimer.get() < 3) {
 					myDrive.arcadeDrive(-1, .45); // drives straight
-					Timer.delay(7);
+					}
+					
 					myDrive.arcadeDrive(-1, 1); // turns
 					Timer.delay(2);
 					myDrive.arcadeDrive(0, 0);
@@ -144,62 +151,10 @@ public class Robot extends IterativeRobot implements PIDOutput {
 					liftSpark.set(-1); // lowers lift
 					Timer.delay(4);
 					liftSpark.set(0);
-				}
-				break;
-			}
-		case centerAuto:
-			if (gameData.length() > 0) {
-				if (gameData.charAt(0) == 'L') {
-					myDrive.arcadeDrive(-1, -1); // turns
-					Timer.delay(2);
-					myDrive.arcadeDrive(-1, .45); // straight
-					Timer.delay(4);
-					myDrive.arcadeDrive(-1, 1); // turns
-					Timer.delay(1);
-					myDrive.arcadeDrive(-1, .45);// straight
-					Timer.delay(2);
-					myDrive.arcadeDrive(-1, 1); // turns
-					Timer.delay(1);
-					myDrive.arcadeDrive(-1, .45); // straight
-					Timer.delay(1);
-					myDrive.arcadeDrive(0, 0);
-					liftSpark.set(1);// raises lift
-					Timer.delay(4);
-					liftSpark.set(0);
-					endSpark.set(1);// launches cube
-					Timer.delay(.5);
-					endSpark.set(0);
-					liftSpark.set(-1); // lowers lift
-					Timer.delay(4);
-					liftSpark.set(0);
-
-				} else if (gameData.charAt(0) == 'R') {
-					myDrive.arcadeDrive(-1, 1); // turns
-					Timer.delay(2);
-					myDrive.arcadeDrive(-1, .45); // straight
-					Timer.delay(4);
-					myDrive.arcadeDrive(-1, -1); // turns
-					Timer.delay(1);
-					myDrive.arcadeDrive(-1, .45);// straight
-					Timer.delay(2);
-					myDrive.arcadeDrive(-1, -1); // turns
-					Timer.delay(1);
-					myDrive.arcadeDrive(-1, .45); // straight
-					Timer.delay(1);
-					myDrive.arcadeDrive(0, 0);
-					liftSpark.set(1);// raises lift
-					Timer.delay(4);
-					liftSpark.set(0);
-					endSpark.set(1);// launches cube
-					Timer.delay(.5);
-					endSpark.set(0);
-					liftSpark.set(-1); // lowers lift
-					Timer.delay(4);
-					liftSpark.set(0);
-				}
-				break;
-			}
-		case rightAuto:
+				} 
+            break;
+    		}
+    	case rightAuto: 
 			if (gameData.length() > 0) {
 				if (gameData.charAt(0) == 'L') {
 					myDrive.arcadeDrive(-1, .45); // drives straight
@@ -242,22 +197,71 @@ public class Robot extends IterativeRobot implements PIDOutput {
 				}
 				break;
 			}
-		default:
-			myDrive.arcadeDrive(-.5, .3);
-			Timer.delay(10.0);
-			myDrive.arcadeDrive(0, 0);
-			break;
-		}
-	}
+		
 
-	@Override
-	public void autonomousPeriodic() {
-		if (autoTimer.get() < 3.0) {
-			myDrive.arcadeDrive(.75, .3);
-		} else {
-			myDrive.arcadeDrive(0, 0);
+    		break;
+    	case centerAuto:
+    		if (gameData.length() > 0) {
+				if (gameData.charAt(0) == 'L') {
+					myDrive.arcadeDrive(-1, -1); // turns
+					Timer.delay(2);
+					myDrive.arcadeDrive(-1, .45); // straight
+					Timer.delay(4);
+					myDrive.arcadeDrive(-1, 1); // turns
+					Timer.delay(1);
+					myDrive.arcadeDrive(-1, .45);// straight
+					Timer.delay(2);
+					myDrive.arcadeDrive(-1, 1); // turns
+					Timer.delay(1);
+					myDrive.arcadeDrive(-1, .45); // straight
+					Timer.delay(1);
+					myDrive.arcadeDrive(0, 0);
+					liftSpark.set(1);// raises lift
+					Timer.delay(4);
+					liftSpark.set(0);
+					endSpark.set(1);// launches cube
+					Timer.delay(.5);
+					endSpark.set(0);
+					liftSpark.set(-1); // lowers lift
+					Timer.delay(4);
+					liftSpark.set(0);
+
+				} else if (gameData.charAt(0) == 'R') {
+					myDrive.arcadeDrive(-1, 1); // turns
+					Timer.delay(2);
+					myDrive.arcadeDrive(-1, .45); // straight
+					Timer.delay(4);
+					myDrive.arcadeDrive(-1, -1); // turns
+					Timer.delay(1);
+					myDrive.arcadeDrive(-1, .45);// straight
+					Timer.delay(2);
+					myDrive.arcadeDrive(-1, -1); // turns
+					Timer.delay(1);
+					myDrive.arcadeDrive(-1, .45); // straight
+					Timer.delay(1);
+					myDrive.arcadeDrive(0, 0);
+					liftSpark.set(1);// raises lift
+					Timer.delay(4);
+					liftSpark.set(0);
+					endSpark.set(1);// launches cube
+					Timer.delay(.5);
+					endSpark.set(0);
+					liftSpark.set(-1); // lowers lift
+					Timer.delay(4);
+					liftSpark.set(0);
+				}
+				break;
+			}
+    		break;
+    	case baseline:
+    		if (autoTimer.get() < 3.0) {
+    			myDrive.arcadeDrive(.75, .3);
+    		} else {
+    			myDrive.arcadeDrive(0, 0);
+    		}
+                break;
+        	}
 		}
-	}
 
 	@Override
 	public void teleopInit() {
