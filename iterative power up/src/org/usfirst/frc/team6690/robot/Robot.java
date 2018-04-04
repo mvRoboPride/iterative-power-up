@@ -663,91 +663,91 @@ case CLsol2false: {
 }
 
 
-case : {
+case CR: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(57);
 	}
 	break;
 }
-case : {
+case CR: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(58);
 	}
 	break;
 }
-case : {
+case CR: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(59);
 	}
 	break;
 }
-case : {
+case CR: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(60);
 	}
 	break;
 }
-case : {
+case CR: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(61);
 	}
 	break;
 }
-case : {
+case CR: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(62);
 	}
 	break;
 }
-case : {
+case CR: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(63);
 	}
 	break;
 }
-case : {
+case CR: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(64);
 	}
 	break;
 }
-case : {
+case CR: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(65);
 	}
 	break;
 }
-case : {
+case CR: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(66);
 	}
 	break;
 }
-case : {
+case CR: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(67);
 	}
 	break;
 }
-case : {
+case CR: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(68);
 	}
 	break;
 }
-case : {
+case CR: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(69);
