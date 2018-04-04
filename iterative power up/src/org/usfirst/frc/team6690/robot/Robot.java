@@ -826,10 +826,4 @@ case CR: {
 			}
 		}
 	}
-
-	@Override
-	public void pidWrite(double output) {
-		// TODO Auto-generated method stub
-
-	}
 }
