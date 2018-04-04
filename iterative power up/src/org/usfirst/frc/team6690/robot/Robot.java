@@ -101,8 +101,8 @@ public class Robot extends IterativeRobot implements PIDOutput {
     private final static int Lldriveforward = 1;
     
     private final static int AUTON_STATE_STOP = 2;
-    private final static int AUTON_STATE_SHOOT = 3;
-    private final static int AUTON_STATE_FINISHED = 4;
+    private final static int  = 3;
+    private final static int autofinished = 4;
     
     // Helper method to change to new state and reset timer so
     // states can keep track of how long they have been running.
@@ -313,7 +313,7 @@ switch (autonState) {
     		break;
     	}
 
-    	case AUTON_STATE_FINISHED: {
+    	case autofinished: {
     		myDrive(0,0);
     		break;
     	}
