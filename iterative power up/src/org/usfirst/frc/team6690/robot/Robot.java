@@ -98,11 +98,81 @@ public class Robot extends IterativeRobot implements PIDOutput {
     private int autonState;
 
     // List of possible states    
-    private final static int Lldriveforward = 1;
+    private final static int LLsoltrue = 1; // left auto, left fms steps
+    private final static int LLdrive1 = 2;
+    private final static int LLright = 3;
+    private final static int LLliftup = 4;
+    private final static int LLdriveoff = 5;
+    private final static int LLliftoff = 6;
+    private final static int LLsolfalse = 7;
+    private final static int LLsol2true = 8;
+    private final static int LLsol2false = 9;
     
-    private final static int AUTON_STATE_STOP = 2;
-    private final static int  = 3;
-    private final static int autofinished = 4;
+    private final static int LRsoltrue = 10; // left auto, right fms steps
+    private final static int LRdrive1 = 11;
+    private final static int LRright1 = 12;
+    private final static int LRdrive2 = 13;
+    private final static int LRright2 = 14;
+    private final static int LRdrive3 = 15;
+    private final static int LRleft1 = 16;
+    private final static int LRdriveoff = 17;
+    private final static int LRliftup = 18;
+    private final static int LRliftoff = 19;
+    private final static int LRsolfalse = 20;
+    private final static int LRsol2true = 21;
+    private final static int LRsol2false = 22;
+    
+    private final static int RRsoltrue = 23; // right auto, right fms steps
+    private final static int RRdrive1 = 24;
+    private final static int RRleft = 25;
+    private final static int RRliftup = 26;
+    private final static int RRdriveoff = 27;
+    private final static int RRliftoff = 28;
+    private final static int RRsolfalse = 29;
+    private final static int RRsol2true = 30;
+    private final static int RRsol2false = 31;
+    
+    private final static int RLsoltrue = 32; // right auto, left fms steps
+    private final static int RLdrive1 = 33;
+    private final static int RLleft1 = 34;
+    private final static int RLdrive2 = 35;
+    private final static int RLleft2 = 36;
+    private final static int RLdrive3 = 37;
+    private final static int RLright1 = 38;
+    private final static int RLdriveoff = 39;
+    private final static int RLliftup = 40;
+    private final static int RLliftoff = 41;
+    private final static int RLsolfalse = 42;
+    private final static int RLsol2true = 43;
+    private final static int RLsol2false = 44;
+
+    private final static int CLsoltrue = 45; //center auto, left fms
+    private final static int CLleft1 = 46;
+    private final static int CLdrive1 = 47;
+    private final static int CLright1 = 48;
+    private final static int CLdrive2 = 49;
+    private final static int CLright2 = 50;
+    private final static int CLdriveoff = 51;
+    private final static int CLliftup = 52;
+    private final static int CLliftoff = 53;
+    private final static int CLsolfalse = 54;
+    private final static int CLsol2true = 55;
+    private final static int CLsol2false = 56;
+    
+    private final static int CRsoltrue = 57; //center auto, left fms
+    private final static int CRright1 = 58;
+    private final static int CRdrive1 = 59;
+    private final static int CRleft1 = 60;
+    private final static int CRdrive2 = 61;
+    private final static int CRleft2 = 62;
+    private final static int CRdriveoff = 63;
+    private final static int CRliftup = 64;
+    private final static int CRliftoff = 65;
+    private final static int CRsolfalse = 66;
+    private final static int CRsol2true = 67;
+    private final static int CRsol2false = 68;
+    
+    private final static int autodone = 69;
     
     // Helper method to change to new state and reset timer so
     // states can keep track of how long they have been running.
@@ -135,87 +205,20 @@ public class Robot extends IterativeRobot implements PIDOutput {
     	case leftAuto:
     		if (gameData.length() > 0) {
 				if (gameData.charAt(0) == 'L') {
-					autonState= Lldriveforward;
-					myDrive.arcadeDrive(1, .4); // drives straight
-					Timer.delay(3);
-					myDrive.arcadeDrive(-1, 1); // turns
-					Timer.delay(2);
-					myDrive.arcadeDrive(0, 0);
-					liftSpark.set(1);// raises lift
-					Timer.delay(5);
-					liftSpark.set(0);
-					endSpark.set(1);// launches cube
-					Timer.delay(.5);
-					endSpark.set(0);
-					liftSpark.set(-1); // lowers lift
-					Timer.delay(4);
-					liftSpark.set(0);
+					autonState = LLsoltrue;
 
 				} else if (gameData.charAt(0) == 'R') { // right
-					myDrive.arcadeDrive(-1, .45); // drives straight
-					Timer.delay(7);
-					myDrive.arcadeDrive(-1, 1); // turns
-					Timer.delay(3);
-					myDrive.arcadeDrive(0, 0);
-					myDrive.arcadeDrive(-1, .45); // straight
-					Timer.delay(6);
-					myDrive.arcadeDrive(-1, 1); // turns
-					Timer.delay(2);
-					myDrive.arcadeDrive(-1, 1);// straight
-					Timer.delay(1);
-					myDrive.arcadeDrive(0, 0);
-					liftSpark.set(1);// raises lift
-					Timer.delay(5);
-					liftSpark.set(0);
-					endSpark.set(1);// launches cube
-					Timer.delay(.5);
-					endSpark.set(0);
-					liftSpark.set(-1); // lowers lift
-					Timer.delay(4);
-					liftSpark.set(0);
+					autonState = LRsoltrue;
 				} 
             break;
     		}
     	case rightAuto: 
 			if (gameData.length() > 0) {
 				if (gameData.charAt(0) == 'L') {
-					myDrive.arcadeDrive(-1, .45); // drives straight
-					Timer.delay(10);
-					myDrive.arcadeDrive(-1, -1); // turns
-					Timer.delay(3);
-					myDrive.arcadeDrive(0, 0);
-					myDrive.arcadeDrive(-1, .45); // straight
-					Timer.delay(9);
-					myDrive.arcadeDrive(-1, -1); // turns
-					Timer.delay(3);
-					myDrive.arcadeDrive(-1, 1);// straight
-					Timer.delay(1);
-					myDrive.arcadeDrive(0, 0);
-					liftSpark.set(1);// raises lift
-					Timer.delay(5);
-					liftSpark.set(0);
-					endSpark.set(1);// launches cube
-					Timer.delay(.5);
-					endSpark.set(0);
-					liftSpark.set(-1); // lowers lift
-					Timer.delay(4);
-					liftSpark.set(0);
+					autonState = RLsoltrue;
 
 				} else if (gameData.charAt(0) == 'R') {
-					myDrive.arcadeDrive(-1, .45); // drives straight
-					Timer.delay(10);
-					myDrive.arcadeDrive(-1, -1); // turns
-					Timer.delay(3);
-					myDrive.arcadeDrive(0, 0);
-					liftSpark.set(1);// raises lift
-					Timer.delay(4);
-					liftSpark.set(0);
-					endSpark.set(1);// launches cube
-					Timer.delay(.5);
-					endSpark.set(0);
-					liftSpark.set(-1);
-					Timer.delay(4);
-					liftSpark.set(0);
+					autonState = RRsoltrue;
 				}
 				break;
 			}
@@ -225,52 +228,10 @@ public class Robot extends IterativeRobot implements PIDOutput {
     	case centerAuto:
     		if (gameData.length() > 0) {
 				if (gameData.charAt(0) == 'L') {
-					myDrive.arcadeDrive(-1, -1); // turns
-					Timer.delay(2);
-					myDrive.arcadeDrive(-1, .45); // straight
-					Timer.delay(4);
-					myDrive.arcadeDrive(-1, 1); // turns
-					Timer.delay(1);
-					myDrive.arcadeDrive(-1, .45);// straight
-					Timer.delay(2);
-					myDrive.arcadeDrive(-1, 1); // turns
-					Timer.delay(1);
-					myDrive.arcadeDrive(-1, .45); // straight
-					Timer.delay(1);
-					myDrive.arcadeDrive(0, 0);
-					liftSpark.set(1);// raises lift
-					Timer.delay(4);
-					liftSpark.set(0);
-					endSpark.set(1);// launches cube
-					Timer.delay(.5);
-					endSpark.set(0);
-					liftSpark.set(-1); // lowers lift
-					Timer.delay(4);
-					liftSpark.set(0);
+					autonState = CLsoltrue;
 
 				} else if (gameData.charAt(0) == 'R') {
-					myDrive.arcadeDrive(-1, 1); // turns
-					Timer.delay(2);
-					myDrive.arcadeDrive(-1, .45); // straight
-					Timer.delay(4);
-					myDrive.arcadeDrive(-1, -1); // turns
-					Timer.delay(1);
-					myDrive.arcadeDrive(-1, .45);// straight
-					Timer.delay(2);
-					myDrive.arcadeDrive(-1, -1); // turns
-					Timer.delay(1);
-					myDrive.arcadeDrive(-1, .45); // straight
-					Timer.delay(1);
-					myDrive.arcadeDrive(0, 0);
-					liftSpark.set(1);// raises lift
-					Timer.delay(4);
-					liftSpark.set(0);
-					endSpark.set(1);// launches cube
-					Timer.delay(.5);
-					endSpark.set(0);
-					liftSpark.set(-1); // lowers lift
-					Timer.delay(4);
-					liftSpark.set(0);
+					autonState = CRsoltrue;
 				}
 				break;
 			}
@@ -285,35 +246,34 @@ public class Robot extends IterativeRobot implements PIDOutput {
         	}
 switch (autonState) {
     	
-    	case Lldriveforward: {
+    	case LLsoltrue: {
     		// Drive forward at half power for 3 seconds
-    		myDrive(.5, .3);
-    		if (autonStateTimer.hasPeriodPassed(3.0)) {
-    			changeAutonState(AUTON_STATE_STOP);
+    		solenoid.set(true);
+    		if (autonStateTimer.hasPeriodPassed(.1)) {
+    			changeAutonState(2);
     		}
     		break;
     	}
 
-    	case AUTON_STATE_STOP: {
+    	case LLdrive1: {
     		// Turn off drive motors
-    		myDrive(0.0, 0.0);
-    		// After 1/2 elapses (time to stop) transition to pickup
+    		myDrive(0.5, 0.3);
+    		// After 1/2 elapses (time to stop) transition 
     		if (autonStateTimer.hasPeriodPassed(.5)) {
-    			changeAutonState(AUTON_STATE_SHOOT);
+    			changeAutonState(3);
     		}
     		break;
     	}
 
-    	case AUTON_STATE_SHOOT: {
-    		// Some auton method that fires a boulder
+    	case : {
     		
     		if (autonStateTimer.hasPeriodPassed(1.5)) {
-    			changeAutonState(AUTON_STATE_FINISHED);
+    			changeAutonState();
     		}
     		break;
     	}
 
-    	case autofinished: {
+    	case autodone: {
     		myDrive(0,0);
     		break;
     	}
@@ -324,6 +284,11 @@ switch (autonState) {
 		// TODO Auto-generated method stub
 		
 	}
+
+	/*private void myDrive(double d, double e) {
+		// TODO Auto-generated method stub
+		
+	}*/
 
 	@Override
 	public void teleopInit() {
