@@ -761,12 +761,6 @@ case CR: {
 
 	}
 
-	/*
-	 * private void myDrive(double d, double e) { // TODO Auto-generated method stub
-	 * 
-	 * }
-	 */
-
 	@Override
 	public void teleopInit() {
 		autoTimer.stop();
