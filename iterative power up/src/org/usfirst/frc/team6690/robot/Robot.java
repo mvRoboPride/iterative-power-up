@@ -54,9 +54,9 @@ public class Robot extends IterativeRobot implements PIDOutput {
 	SpeedControllerGroup rightDriveSide = new SpeedControllerGroup(rightDrive1, rightDrive2);
 
 	Timer autoTimer = new Timer();
-	
+
 	DigitalInput endSwitch;
-	
+
 	PowerDistributionPanel pdp = new PowerDistributionPanel();
 
 	final String baseline = "Baseline";
@@ -91,112 +91,113 @@ public class Robot extends IterativeRobot implements PIDOutput {
 		SmartDashboard.putData("Auto choices", chooser);
 		System.out.println("Robot initialized");
 	}
-	   // Keeps track of time state was entered
-    private Timer autonStateTimer;
 
-    // Keeps track of current state
-    private int autonState;
+	// Keeps track of time state was entered
+	private Timer autonStateTimer;
 
-    // List of possible states    
-    private final static int LLsoltrue = 1; // left auto, left fms steps
-    private final static int LLdrive1 = 2;
-    private final static int LLright = 3;
-    private final static int LLliftup = 4;
-    private final static int LLdriveoff = 5;
-    private final static int LLliftoff = 6;
-    private final static int LLsolfalse = 7;
-    private final static int LLsol2true = 8;
-    private final static int LLsol2false = 9;
-    
-    private final static int LRsoltrue = 10; // left auto, right fms steps
-    private final static int LRdrive1 = 11;
-    private final static int LRright1 = 12;
-    private final static int LRdrive2 = 13;
-    private final static int LRright2 = 14;
-    private final static int LRdrive3 = 15;
-    private final static int LRleft1 = 16;
-    private final static int LRdriveoff = 17;
-    private final static int LRliftup = 18;
-    private final static int LRliftoff = 19;
-    private final static int LRsolfalse = 20;
-    private final static int LRsol2true = 21;
-    private final static int LRsol2false = 22;
-    
-    private final static int RRsoltrue = 23; // right auto, right fms steps
-    private final static int RRdrive1 = 24;
-    private final static int RRleft = 25;
-    private final static int RRliftup = 26;
-    private final static int RRdriveoff = 27;
-    private final static int RRliftoff = 28;
-    private final static int RRsolfalse = 29;
-    private final static int RRsol2true = 30;
-    private final static int RRsol2false = 31;
-    
-    private final static int RLsoltrue = 32; // right auto, left fms steps
-    private final static int RLdrive1 = 33;
-    private final static int RLleft1 = 34;
-    private final static int RLdrive2 = 35;
-    private final static int RLleft2 = 36;
-    private final static int RLdrive3 = 37;
-    private final static int RLright1 = 38;
-    private final static int RLdriveoff = 39;
-    private final static int RLliftup = 40;
-    private final static int RLliftoff = 41;
-    private final static int RLsolfalse = 42;
-    private final static int RLsol2true = 43;
-    private final static int RLsol2false = 44;
+	// Keeps track of current state
+	private int autonState;
 
-    private final static int CLsoltrue = 45; //center auto, left fms
-    private final static int CLleft1 = 46;
-    private final static int CLdrive1 = 47;
-    private final static int CLright1 = 48;
-    private final static int CLdrive2 = 49;
-    private final static int CLright2 = 50;
-    private final static int CLdriveoff = 51;
-    private final static int CLliftup = 52;
-    private final static int CLliftoff = 53;
-    private final static int CLsolfalse = 54;
-    private final static int CLsol2true = 55;
-    private final static int CLsol2false = 56;
-    
-    private final static int CRsoltrue = 57; //center auto, left fms
-    private final static int CRright1 = 58;
-    private final static int CRdrive1 = 59;
-    private final static int CRleft1 = 60;
-    private final static int CRdrive2 = 61;
-    private final static int CRleft2 = 62;
-    private final static int CRdriveoff = 63;
-    private final static int CRliftup = 64;
-    private final static int CRliftoff = 65;
-    private final static int CRsolfalse = 66;
-    private final static int CRsol2true = 67;
-    private final static int CRsol2false = 68;
-    
-    private final static int autodone = 69;
-    
-    // Helper method to change to new state and reset timer so
-    // states can keep track of how long they have been running.
+	// List of possible states
+	private final static int LLsoltrue = 1; // left auto, left fms steps
+	private final static int LLdrive1 = 2;
+	private final static int LLright = 3;
+	private final static int LLliftup = 4;
+	private final static int LLdriveoff = 5;
+	private final static int LLliftoff = 6;
+	private final static int LLsolfalse = 7;
+	private final static int LLsol2true = 8;
+	private final static int LLsol2false = 9;
 
-    private void changeAutonState(int nextState) {
-    	if (nextState != autonState) {
-    		autonState = nextState;
-    		autonStateTimer.reset();
-    	}
-    }
-    
+	private final static int LRsoltrue = 10; // left auto, right fms steps
+	private final static int LRdrive1 = 11;
+	private final static int LRright1 = 12;
+	private final static int LRdrive2 = 13;
+	private final static int LRright2 = 14;
+	private final static int LRdrive3 = 15;
+	private final static int LRleft1 = 16;
+	private final static int LRdriveoff = 17;
+	private final static int LRliftup = 18;
+	private final static int LRliftoff = 19;
+	private final static int LRsolfalse = 20;
+	private final static int LRsol2true = 21;
+	private final static int LRsol2false = 22;
+
+	private final static int RRsoltrue = 23; // right auto, right fms steps
+	private final static int RRdrive1 = 24;
+	private final static int RRleft = 25;
+	private final static int RRliftup = 26;
+	private final static int RRdriveoff = 27;
+	private final static int RRliftoff = 28;
+	private final static int RRsolfalse = 29;
+	private final static int RRsol2true = 30;
+	private final static int RRsol2false = 31;
+
+	private final static int RLsoltrue = 32; // right auto, left fms steps
+	private final static int RLdrive1 = 33;
+	private final static int RLleft1 = 34;
+	private final static int RLdrive2 = 35;
+	private final static int RLleft2 = 36;
+	private final static int RLdrive3 = 37;
+	private final static int RLright1 = 38;
+	private final static int RLdriveoff = 39;
+	private final static int RLliftup = 40;
+	private final static int RLliftoff = 41;
+	private final static int RLsolfalse = 42;
+	private final static int RLsol2true = 43;
+	private final static int RLsol2false = 44;
+
+	private final static int CLsoltrue = 45; // center auto, left fms
+	private final static int CLleft1 = 46;
+	private final static int CLdrive1 = 47;
+	private final static int CLright1 = 48;
+	private final static int CLdrive2 = 49;
+	private final static int CLright2 = 50;
+	private final static int CLdriveoff = 51;
+	private final static int CLliftup = 52;
+	private final static int CLliftoff = 53;
+	private final static int CLsolfalse = 54;
+	private final static int CLsol2true = 55;
+	private final static int CLsol2false = 56;
+
+	private final static int CRsoltrue = 57; // center auto, left fms
+	private final static int CRright1 = 58;
+	private final static int CRdrive1 = 59;
+	private final static int CRleft1 = 60;
+	private final static int CRdrive2 = 61;
+	private final static int CRleft2 = 62;
+	private final static int CRdriveoff = 63;
+	private final static int CRliftup = 64;
+	private final static int CRliftoff = 65;
+	private final static int CRsolfalse = 66;
+	private final static int CRsol2true = 67;
+	private final static int CRsol2false = 68;
+
+	private final static int autodone = 69;
+
+	// Helper method to change to new state and reset timer so
+	// states can keep track of how long they have been running.
+
+	private void changeAutonState(int nextState) {
+		if (nextState != autonState) {
+			autonState = nextState;
+			autonStateTimer.reset();
+		}
+	}
+
 	@Override
 	public void autonomousInit() { // 11.75 second full climb
-		
+
 		System.out.println("starting auto");
 		autoTimer.reset();
 		autoTimer.start();
 		autoSelected = chooser.getSelected();
 		System.out.println("Auto selected: " + autoSelected);
-    	autonStateTimer = new Timer();
-        // Not sure if start() is required anymore, but it shouldn't hurt
-        autonStateTimer.start();
+		autonStateTimer = new Timer();
+		// Not sure if start() is required anymore, but it shouldn't hurt
+		autonStateTimer.start();
 	}
-		
+
 	@Override
 	public void autonomousPeriodic() {
 		String gameData;
@@ -264,14 +265,509 @@ switch (autonState) {
     		}
     		break;
     	}
-
-    	case : {
+case : {
     		
-    		if (autonStateTimer.hasPeriodPassed(1.5)) {
-    			changeAutonState();
+    		if (autonStateTimer.hasPeriodPassed()) {
+    			changeAutonState(4);
     		}
     		break;
     	}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(5);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(6);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(7);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(8);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(9);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(69);
+	}
+	break;
+}
+
+
+
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(10);
+	}
+	break;
+}
+	case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(11);
+	}
+	break;
+}
+	case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(12);
+	}
+	break;
+}
+
+    	case : {
+    		
+    		if (autonStateTimer.hasPeriodPassed()) {
+    			changeAutonState(13);
+    		}
+    		break;
+    	}
+case : {
+    		
+    		if (autonStateTimer.hasPeriodPassed()) {
+    			changeAutonState(14);
+    		}
+    		break;
+    	}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(15);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(16);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(17);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(18);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(19);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(20);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(21);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(22);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(69);
+	}
+	break;
+}
+
+
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(23);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(24);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(25);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(26);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(27);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(28);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(29);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(30);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(31);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(69);
+	}
+	break;
+}
+
+
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(32);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(33);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(34);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(35);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(36);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(37);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(38);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(39);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(40);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(41);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(42);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(43);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(44);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(69);
+	}
+	break;
+}
+
+
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(45);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(46);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(47);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(48);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(49);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(50);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(52);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(53);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(54);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(55);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(56);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(69);
+	}
+	break;
+}
+
+
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(57);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(58);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(59);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(60);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(61);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(62);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(63);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(64);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(65);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(66);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(67);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(68);
+	}
+	break;
+}
+case : {
+	
+	if (autonStateTimer.hasPeriodPassed()) {
+		changeAutonState(69);
+	}
+	break;
+}
+
 
     	case autodone: {
     		myDrive(0,0);
@@ -282,13 +778,14 @@ switch (autonState) {
 
 	private void myDrive(double d, double e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	/*private void myDrive(double d, double e) {
-		// TODO Auto-generated method stub
-		
-	}*/
+	/*
+	 * private void myDrive(double d, double e) { // TODO Auto-generated method stub
+	 * 
+	 * }
+	 */
 
 	@Override
 	public void teleopInit() {
