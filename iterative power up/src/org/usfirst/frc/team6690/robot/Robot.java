@@ -91,7 +91,28 @@ public class Robot extends IterativeRobot implements PIDOutput {
 		SmartDashboard.putData("Auto choices", chooser);
 		System.out.println("Robot initialized");
 	}
+	   // Keeps track of time state was entered
+    private Timer autonStateTimer;
 
+    // Keeps track of current state
+    private int autonState;
+
+    // List of possible states    
+    private final static int AUTON_STATE_DRIVE_FORWARD = 1;
+    private final static int AUTON_STATE_STOP = 2;
+    private final static int AUTON_STATE_SHOOT = 3;
+    private final static int AUTON_STATE_FINISHED = 4;
+    
+    // Helper method to change to new state and reset timer so
+    // states can keep track of how long they have been running.
+
+    private void changeAutonState(int nextState) {
+    	if (nextState != autonState) {
+    		autonState = nextState;
+    		autonStateTimer.reset();
+    	}
+    }
+    
 	@Override
 	public void autonomousInit() { // 11.75 second full climb
 		
@@ -100,6 +121,9 @@ public class Robot extends IterativeRobot implements PIDOutput {
 		autoTimer.start();
 		autoSelected = chooser.getSelected();
 		System.out.println("Auto selected: " + autoSelected);
+    	autonStateTimer = new Timer();
+        // Not sure if start() is required anymore, but it shouldn't hurt
+        autonStateTimer.start();
 	}
 		
 	@Override
@@ -110,12 +134,9 @@ public class Robot extends IterativeRobot implements PIDOutput {
     	case leftAuto:
     		if (gameData.length() > 0) {
 				if (gameData.charAt(0) == 'L') {
-					autoTimer.reset();
-					autoTimer.start();
-					if (autoTimer.get() < 3) {
-					myDrive.arcadeDrive(-1, .45); // drives straight
-					}
-					
+					autonState= AUTON_STATE_DRIVE_FORWARD;
+					myDrive.arcadeDrive(1, .4); // drives straight
+					Timer.delay(3);
 					myDrive.arcadeDrive(-1, 1); // turns
 					Timer.delay(2);
 					myDrive.arcadeDrive(0, 0);
@@ -261,7 +282,47 @@ public class Robot extends IterativeRobot implements PIDOutput {
     		}
                 break;
         	}
+switch (autonState) {
+    	
+    	case AUTON_STATE_DRIVE_FORWARD: {
+    		// Drive forward at half power for 3 seconds
+    		myDrive(.5, .3);
+    		if (autonStateTimer.hasPeriodPassed(3.0)) {
+    			changeAutonState(AUTON_STATE_STOP);
+    		}
+    		break;
+    	}
+
+    	case AUTON_STATE_STOP: {
+    		// Turn off drive motors
+    		myDrive(0.0, 0.0);
+    		// After 1/2 elapses (time to stop) transition to pickup
+    		if (autonStateTimer.hasPeriodPassed(.5)) {
+    			changeAutonState(AUTON_STATE_SHOOT);
+    		}
+    		break;
+    	}
+
+    	case AUTON_STATE_SHOOT: {
+    		// Some auton method that fires a boulder
+    		fireBoulder();
+    		if (autonStateTimer.hasPeriodPassed(1.5)) {
+    			changeAutonState(AUTON_STATE_FINISHED);
+    		}
+    		break;
+    	}
+
+    	case AUTON_STATE_FINISHED: {
+    		stopShooter();
+    		break;
+    	}
+    	}
 		}
+
+	private void myDrive(double d, double e) {
+		// TODO Auto-generated method stub
+		
+	}
 
 	@Override
 	public void teleopInit() {
