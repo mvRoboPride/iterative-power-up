@@ -411,7 +411,7 @@ case LRsol2false: {
 }
 
 
-case RRsoltrue: {
+/*case RRsoltrue: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(23);
@@ -568,7 +568,7 @@ case RLsol2false: {
 	}
 	break;
 }
-
+*/
 
 case CLsoltrue: {
 	solenoid.set(true);
@@ -655,7 +655,7 @@ case CLsol2false: {
 	break;
 }
 
-
+/*
 case CR: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
@@ -748,7 +748,7 @@ case CR: {
 	break;
 }
 
-
+*/
     	case autodone: {
     		myDrive(0,0);
     		break;
