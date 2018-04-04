@@ -265,49 +265,49 @@ switch (autonState) {
     		}
     		break;
     	}
-case : {
+case LLright: {
     		
     		if (autonStateTimer.hasPeriodPassed()) {
     			changeAutonState(4);
     		}
     		break;
     	}
-case : {
+case LLliftup: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(5);
 	}
 	break;
 }
-case : {
+case LLdriveoff: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(6);
 	}
 	break;
 }
-case : {
+case LLliftoff: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(7);
 	}
 	break;
 }
-case : {
+case LLsolfalse: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(8);
 	}
 	break;
 }
-case : {
+case LLsol2true: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(9);
 	}
 	break;
 }
-case : {
+case LLsol2false: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(69);
@@ -317,21 +317,21 @@ case : {
 
 
 
-case : {
+case LRsoltrue: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(10);
 	}
 	break;
 }
-	case : {
+	case LRdrive1: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(11);
 	}
 	break;
 }
-	case : {
+	case LRright1: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(12);
@@ -339,77 +339,77 @@ case : {
 	break;
 }
 
-    	case : {
+    	case LRdrive2: {
     		
     		if (autonStateTimer.hasPeriodPassed()) {
     			changeAutonState(13);
     		}
     		break;
     	}
-case : {
+case LRright2: {
     		
     		if (autonStateTimer.hasPeriodPassed()) {
     			changeAutonState(14);
     		}
     		break;
     	}
-case : {
+case LRright2: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(15);
 	}
 	break;
 }
-case : {
+case LRdrive3: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(16);
 	}
 	break;
 }
-case : {
+case LRleft1: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(17);
 	}
 	break;
 }
-case : {
+case LRdriveoff: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(18);
 	}
 	break;
 }
-case : {
+case LRliftup: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(19);
 	}
 	break;
 }
-case : {
+case LRliftoff: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(20);
 	}
 	break;
 }
-case : {
+case LRsolfalse: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(21);
 	}
 	break;
 }
-case : {
+case LRsol2true: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(22);
 	}
 	break;
 }
-case : {
+case LRsol2false: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(69);
@@ -418,79 +418,73 @@ case : {
 }
 
 
-case : {
+case RRsoltrue: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(23);
 	}
 	break;
 }
-case : {
+case RRdrive1: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(24);
 	}
 	break;
 }
-case : {
+case RRleft: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(25);
 	}
 	break;
 }
-case : {
+case RRliftup: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(26);
 	}
 	break;
 }
-case : {
+case RRdriveoff: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(27);
 	}
 	break;
 }
-case : {
+case RRliftoff: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(28);
 	}
 	break;
 }
-case : {
+case RRsolfalse: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(29);
 	}
 	break;
 }
-case : {
+case RRsol2true: {
 	
-	if (autonStateTimer.hasPeriodPassed()) {
+	if (autonStateTimer.hasPeriodPassed(.2)) {
 		changeAutonState(30);
 	}
 	break;
 }
-case : {
+case RRsol2false: {
 	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(31);
-	}
-	break;
-}
-case : {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	if (autonStateTimer.hasPeriodPassed(.2)) {
 		changeAutonState(69);
 	}
 	break;
 }
 
 
-case : {
+
+case RL: {
 	
 	if (autonStateTimer.hasPeriodPassed()) {
 		changeAutonState(32);
