@@ -319,100 +319,92 @@ case LLsol2false: {
 
 
 case LRsoltrue: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	solenoid.set(true);
+	if (autonStateTimer.hasPeriodPassed(.1)) {
 		changeAutonState(10);
 	}
 	break;
 }
 	case LRdrive1: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	myDrive(1, .3);
+	if (autonStateTimer.hasPeriodPassed(2.75)) {
 		changeAutonState(11);
 	}
 	break;
 }
 	case LRright1: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	myDrive(.5, 1);
+	if (autonStateTimer.hasPeriodPassed(.25)) {
 		changeAutonState(12);
 	}
 	break;
 }
-
     	case LRdrive2: {
-    		
-    		if (autonStateTimer.hasPeriodPassed()) {
+    		myDrive(1, .3);
+    		if (autonStateTimer.hasPeriodPassed(4)) {
     			changeAutonState(13);
     		}
     		break;
     	}
 case LRright2: {
-    		
-    		if (autonStateTimer.hasPeriodPassed()) {
+    		myDrive(.75, 3);
+    		if (autonStateTimer.hasPeriodPassed(.25)) {
     			changeAutonState(14);
     		}
     		break;
     	}
-case LRright2: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+case LRdrive3: {
+	myDrive(1, .3);
+	if (autonStateTimer.hasPeriodPassed(.75)) {
 		changeAutonState(15);
 	}
 	break;
 }
-case LRdrive3: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+case LRleft1: {
+	myDrive(.75, -1);
+	if (autonStateTimer.hasPeriodPassed(.25)) {
 		changeAutonState(16);
 	}
 	break;
 }
-case LRleft1: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+case LRdriveoff: {
+	myDrive(0,0);
+	if (autonStateTimer.hasPeriodPassed(.01)) {
 		changeAutonState(17);
 	}
 	break;
 }
-case LRdriveoff: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+case LRliftup: {
+	liftSpark.set(1);
+	if (autonStateTimer.hasPeriodPassed(4)) {
 		changeAutonState(18);
 	}
 	break;
 }
-case LRliftup: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+case LRliftoff: {
+	liftSpark.set(0);
+	if (autonStateTimer.hasPeriodPassed(.01)) {
 		changeAutonState(19);
 	}
 	break;
 }
-case LRliftoff: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+case LRsolfalse: {
+	solenoid.set(false);
+	if (autonStateTimer.hasPeriodPassed(.01)) {
 		changeAutonState(20);
 	}
 	break;
 }
-case LRsolfalse: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+case LRsol2true: {
+	sol2.set(true);
+	if (autonStateTimer.hasPeriodPassed(.1)) {
 		changeAutonState(21);
 	}
 	break;
 }
-case LRsol2true: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(22);
-	}
-	break;
-}
 case LRsol2false: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	sol2.set(false);
+	if (autonStateTimer.hasPeriodPassed(.01)) {
 		changeAutonState(69);
 	}
 	break;
@@ -579,85 +571,85 @@ case RLsol2false: {
 
 
 case CLsoltrue: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	solenoid.set(true);
+	if (autonStateTimer.hasPeriodPassed(.1)) {
 		changeAutonState(45);
 	}
 	break;
 }
 case CLleft1: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	myDrive(.75, -1);
+	if (autonStateTimer.hasPeriodPassed(.25)) {
 		changeAutonState(46);
 	}
 	break;
 }
 case CLdrive1: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	myDrive(1, .3);
+	if (autonStateTimer.hasPeriodPassed(1)) {
 		changeAutonState(47);
 	}
 	break;
 }
 case CLright1: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	myDrive(.75, .3);
+	if (autonStateTimer.hasPeriodPassed(.25)) {
 		changeAutonState(48);
 	}
 	break;
 }
 case CLdrive2: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	myDrive(1, .3);
+	if (autonStateTimer.hasPeriodPassed(.75)) {
 		changeAutonState(49);
 	}
 	break;
 }
 case CLright2: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	myDrive(.75, .3);
+	if (autonStateTimer.hasPeriodPassed(.25)) {
 		changeAutonState(50);
 	}
 	break;
 }
 case CLdriveoff: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	myDrive(0,0);
+	if (autonStateTimer.hasPeriodPassed(.01)) {
 		changeAutonState(52);
 	}
 	break;
 }
 case CLliftup: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	liftSpark.set(1);
+	if (autonStateTimer.hasPeriodPassed(4)) {
 		changeAutonState(53);
 	}
 	break;
 }
 case CLliftoff: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	liftSpark.set(0);;
+	if (autonStateTimer.hasPeriodPassed(.01)) {
 		changeAutonState(54);
 	}
 	break;
 }
 case CLsolfalse: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	solenoid.set(false);
+	if (autonStateTimer.hasPeriodPassed(.01)) {
 		changeAutonState(55);
 	}
 	break;
 }
 case CLsol2true: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	sol2.set(true);
+	if (autonStateTimer.hasPeriodPassed(.1)) {
 		changeAutonState(56);
 	}
 	break;
 }
 case CLsol2false: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	sol2.set(false);
+	if (autonStateTimer.hasPeriodPassed(.01)) {
 		changeAutonState(69);
 	}
 	break;
