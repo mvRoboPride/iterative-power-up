@@ -42,6 +42,7 @@ public class Robot extends IterativeRobot implements PIDOutput {
 	Solenoid solenoid = new Solenoid(0);
 	Solenoid sol2 = new Solenoid(1);
 
+	Spark raiseSpark = new Spark(7);
 	Spark liftSpark = new Spark(5);
 	Spark endSpark = new Spark(0);
 	Spark endSpark2 = new Spark(6);
@@ -258,58 +259,58 @@ switch (autonState) {
 
     	case LLdrive1: {
     		// Turn off drive motors
-    		myDrive(0.5, 0.3);
+    		myDrive(0.75, 0.3);
     		// After 1/2 elapses (time to stop) transition 
-    		if (autonStateTimer.hasPeriodPassed(.5)) {
+    		if (autonStateTimer.hasPeriodPassed(3.5)) {
     			changeAutonState(3);
     		}
     		break;
     	}
 case LLright: {
-    		
-    		if (autonStateTimer.hasPeriodPassed()) {
+    		myDrive(.5, 1);
+    		if (autonStateTimer.hasPeriodPassed(.25)) {
     			changeAutonState(4);
     		}
     		break;
     	}
 case LLliftup: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	liftSpark.set(1);
+	if (autonStateTimer.hasPeriodPassed(3)) {
 		changeAutonState(5);
 	}
 	break;
 }
 case LLdriveoff: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	myDrive(0,0);
+	if (autonStateTimer.hasPeriodPassed(.05)) {
 		changeAutonState(6);
 	}
 	break;
 }
 case LLliftoff: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	liftSpark.set(0);
+	if (autonStateTimer.hasPeriodPassed(.05)) {
 		changeAutonState(7);
 	}
 	break;
 }
 case LLsolfalse: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	solenoid.set(false);
+	if (autonStateTimer.hasPeriodPassed(.05)) {
 		changeAutonState(8);
 	}
 	break;
 }
 case LLsol2true: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	sol2.set(true);
+	if (autonStateTimer.hasPeriodPassed(.1)) {
 		changeAutonState(9);
 	}
 	break;
 }
 case LLsol2false: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
+	sol2.set(false);
+	if (autonStateTimer.hasPeriodPassed(.05)) {
 		changeAutonState(69);
 	}
 	break;
@@ -800,7 +801,13 @@ case CR: {
 
 			double rightStickValue = xbox.getRawAxis(5);
 			liftSpark.set(rightStickValue);
-
+			
+			if (xbox.getXButton()) {
+				raiseSpark.set(1);
+			}
+			if (xbox.getYButton()) {
+				raiseSpark.set(-1);
+			}
 			if (endSwitch.get()) {
 				liftSpark.set(-1);
 				Timer.delay(.2);
