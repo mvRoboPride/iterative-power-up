@@ -98,7 +98,8 @@ public class Robot extends IterativeRobot implements PIDOutput {
     private int autonState;
 
     // List of possible states    
-    private final static int AUTON_STATE_DRIVE_FORWARD = 1;
+    private final static int Lldriveforward = 1;
+    
     private final static int AUTON_STATE_STOP = 2;
     private final static int AUTON_STATE_SHOOT = 3;
     private final static int AUTON_STATE_FINISHED = 4;
@@ -134,7 +135,7 @@ public class Robot extends IterativeRobot implements PIDOutput {
     	case leftAuto:
     		if (gameData.length() > 0) {
 				if (gameData.charAt(0) == 'L') {
-					autonState= AUTON_STATE_DRIVE_FORWARD;
+					autonState= Lldriveforward;
 					myDrive.arcadeDrive(1, .4); // drives straight
 					Timer.delay(3);
 					myDrive.arcadeDrive(-1, 1); // turns
@@ -284,7 +285,7 @@ public class Robot extends IterativeRobot implements PIDOutput {
         	}
 switch (autonState) {
     	
-    	case AUTON_STATE_DRIVE_FORWARD: {
+    	case Lldriveforward: {
     		// Drive forward at half power for 3 seconds
     		myDrive(.5, .3);
     		if (autonStateTimer.hasPeriodPassed(3.0)) {
@@ -305,7 +306,7 @@ switch (autonState) {
 
     	case AUTON_STATE_SHOOT: {
     		// Some auton method that fires a boulder
-    		fireBoulder();
+    		
     		if (autonStateTimer.hasPeriodPassed(1.5)) {
     			changeAutonState(AUTON_STATE_FINISHED);
     		}
@@ -313,7 +314,7 @@ switch (autonState) {
     	}
 
     	case AUTON_STATE_FINISHED: {
-    		stopShooter();
+    		myDrive(0,0);
     		break;
     	}
     	}
