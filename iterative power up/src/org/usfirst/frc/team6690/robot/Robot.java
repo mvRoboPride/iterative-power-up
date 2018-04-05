@@ -258,10 +258,8 @@ switch (autonState) {
     	}
 
     	case LLdrive1: {
-    		// Turn off drive motors
     		myDrive(0.75, 0.3);
-    		// After 1/2 elapses (time to stop) transition 
-    		if (autonStateTimer.hasPeriodPassed(3.5)) {
+    		if (autonStateTimer.hasPeriodPassed(2.25)) {
     			changeAutonState(3);
     		}
     		break;
@@ -327,7 +325,7 @@ case LRsoltrue: {
 }
 	case LRdrive1: {
 	myDrive(1, .3);
-	if (autonStateTimer.hasPeriodPassed(2.75)) {
+	if (autonStateTimer.hasPeriodPassed(3)) {
 		changeAutonState(11);
 	}
 	break;
@@ -341,7 +339,7 @@ case LRsoltrue: {
 }
     	case LRdrive2: {
     		myDrive(1, .3);
-    		if (autonStateTimer.hasPeriodPassed(4)) {
+    		if (autonStateTimer.hasPeriodPassed(2.25)) {
     			changeAutonState(13);
     		}
     		break;
