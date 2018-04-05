@@ -29,7 +29,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 @SuppressWarnings("unused")
-public class Robot extends IterativeRobot implements PIDOutput {
+public class Robot extends IterativeRobot  {
 
 	DifferentialDrive myDrive;
 
@@ -275,7 +275,7 @@ case LLright: {
     	}
 case LLliftup: {
 	liftSpark.set(1);
-	if (autonStateTimer.hasPeriodPassed(3)) {
+	if (autonStateTimer.hasPeriodPassed(2)) {
 		changeAutonState(5);
 	}
 	break;
@@ -376,7 +376,7 @@ case LRdriveoff: {
 }
 case LRliftup: {
 	liftSpark.set(1);
-	if (autonStateTimer.hasPeriodPassed(4)) {
+	if (autonStateTimer.hasPeriodPassed(3)) {
 		changeAutonState(18);
 	}
 	break;
@@ -621,7 +621,7 @@ case CLdriveoff: {
 }
 case CLliftup: {
 	liftSpark.set(1);
-	if (autonStateTimer.hasPeriodPassed(4)) {
+	if (autonStateTimer.hasPeriodPassed(2)) {
 		changeAutonState(53);
 	}
 	break;
