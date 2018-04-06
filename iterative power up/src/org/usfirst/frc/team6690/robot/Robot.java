@@ -584,7 +584,7 @@ case CLleft1: {
 }
 case CLdrive1: {
 	myDrive(1, .3);
-	if (autonStateTimer.hasPeriodPassed(1)) {
+	if (autonStateTimer.hasPeriodPassed(1.2)) {
 		changeAutonState(47);
 	}
 	break;
@@ -598,7 +598,7 @@ case CLright1: {
 }
 case CLdrive2: {
 	myDrive(1, .3);
-	if (autonStateTimer.hasPeriodPassed(.75)) {
+	if (autonStateTimer.hasPeriodPassed(1)) {
 		changeAutonState(49);
 	}
 	break;
@@ -786,6 +786,20 @@ case CR: {
 			double rightStickValue = xbox.getRawAxis(5);
 			liftSpark.set(rightStickValue);
 			
+			if (xbox.getBumperPressed(Hand.kLeft)) {
+				endSpark.set(1);
+				endSpark2.set(1);
+			} else if (xbox.getBumperReleased(Hand.kLeft)) {
+				endSpark.set(0);
+				endSpark2.set(0);
+			}
+			if (xbox.getBumperPressed(Hand.kRight)) {
+				endSpark.set(-1);
+				endSpark2.set(-1);
+			} else if (xbox.getBumperReleased(Hand.kRight)) {
+				endSpark.set(0);
+				endSpark2.set(0);
+			}
 			if (xbox.getXButton()) {
 				raiseSpark.set(1);
 			}
