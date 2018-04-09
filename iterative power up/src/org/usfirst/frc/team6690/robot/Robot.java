@@ -55,10 +55,13 @@ public class Robot extends IterativeRobot  {
 	SpeedControllerGroup rightDriveSide = new SpeedControllerGroup(rightDrive1, rightDrive2);
 
 	Timer autoTimer = new Timer();
+	Timer liftTimer = new Timer();
+	Timer pneuTimer = new Timer();
+	Timer raiseTimer = new Timer ();
 
 	DigitalInput endSwitch;
 
-	PowerDistributionPanel pdp = new PowerDistributionPanel();
+	//PowerDistributionPanel pdp = new PowerDistributionPanel();
 
 	final String baseline = "Baseline";
 	final String leftAuto = "Left Auto";
@@ -74,12 +77,11 @@ public class Robot extends IterativeRobot  {
 
 		UsbCamera Camera = CameraServer.getInstance().startAutomaticCapture(0); // usb camera
 		Camera.setFPS(35);
-		Camera.setResolution(640, 640);
+		Camera.setResolution(800, 450);
 
-		pdp.clearStickyFaults();
+	//	pdp.clearStickyFaults();
 
 		myDrive = new DifferentialDrive(leftDriveSide, rightDriveSide);// (1,2,3,4); //Arcade Drive
-		// driveStick = new Joystick(1); // Arcade Drive
 
 		xbox = new XboxController(1);
 
@@ -93,98 +95,10 @@ public class Robot extends IterativeRobot  {
 		System.out.println("Robot initialized");
 	}
 
-	// Keeps track of time state was entered
-	private Timer autonStateTimer;
-
-	// Keeps track of current state
-	private int autonState;
-
-	// List of possible states
-	private final static int LLsoltrue = 1; // left auto, left fms steps
-	private final static int LLdrive1 = 2;
-	private final static int LLright = 3;
-	private final static int LLliftup = 4;
-	private final static int LLdriveoff = 5;
-	private final static int LLliftoff = 6;
-	private final static int LLsolfalse = 7;
-	private final static int LLsol2true = 8;
-	private final static int LLsol2false = 9;
-
-	private final static int LRsoltrue = 10; // left auto, right fms steps
-	private final static int LRdrive1 = 11;
-	private final static int LRright1 = 12;
-	private final static int LRdrive2 = 13;
-	private final static int LRright2 = 14;
-	private final static int LRdrive3 = 15;
-	private final static int LRleft1 = 16;
-	private final static int LRdriveoff = 17;
-	private final static int LRliftup = 18;
-	private final static int LRliftoff = 19;
-	private final static int LRsolfalse = 20;
-	private final static int LRsol2true = 21;
-	private final static int LRsol2false = 22;
-
-	private final static int RRsoltrue = 23; // right auto, right fms steps
-	private final static int RRdrive1 = 24;
-	private final static int RRleft = 25;
-	private final static int RRliftup = 26;
-	private final static int RRdriveoff = 27;
-	private final static int RRliftoff = 28;
-	private final static int RRsolfalse = 29;
-	private final static int RRsol2true = 30;
-	private final static int RRsol2false = 31;
-
-	private final static int RLsoltrue = 32; // right auto, left fms steps
-	private final static int RLdrive1 = 33;
-	private final static int RLleft1 = 34;
-	private final static int RLdrive2 = 35;
-	private final static int RLleft2 = 36;
-	private final static int RLdrive3 = 37;
-	private final static int RLright1 = 38;
-	private final static int RLdriveoff = 39;
-	private final static int RLliftup = 40;
-	private final static int RLliftoff = 41;
-	private final static int RLsolfalse = 42;
-	private final static int RLsol2true = 43;
-	private final static int RLsol2false = 44;
-
-	private final static int CLsoltrue = 45; // center auto, left fms
-	private final static int CLleft1 = 46;
-	private final static int CLdrive1 = 47;
-	private final static int CLright1 = 48;
-	private final static int CLdrive2 = 49;
-	private final static int CLright2 = 50;
-	private final static int CLdriveoff = 51;
-	private final static int CLliftup = 52;
-	private final static int CLliftoff = 53;
-	private final static int CLsolfalse = 54;
-	private final static int CLsol2true = 55;
-	private final static int CLsol2false = 56;
-
-	private final static int CRsoltrue = 57; // center auto, left fms
-	private final static int CRright1 = 58;
-	private final static int CRdrive1 = 59;
-	private final static int CRleft1 = 60;
-	private final static int CRdrive2 = 61;
-	private final static int CRleft2 = 62;
-	private final static int CRdriveoff = 63;
-	private final static int CRliftup = 64;
-	private final static int CRliftoff = 65;
-	private final static int CRsolfalse = 66;
-	private final static int CRsol2true = 67;
-	private final static int CRsol2false = 68;
-
-	private final static int autodone = 69;
 
 	// Helper method to change to new state and reset timer so
 	// states can keep track of how long they have been running.
 
-	private void changeAutonState(int nextState) {
-		if (nextState != autonState) {
-			autonState = nextState;
-			autonStateTimer.reset();
-		}
-	}
 
 	@Override
 	public void autonomousInit() { // 11.75 second full climb
@@ -194,9 +108,6 @@ public class Robot extends IterativeRobot  {
 		autoTimer.start();
 		autoSelected = chooser.getSelected();
 		System.out.println("Auto selected: " + autoSelected);
-		autonStateTimer = new Timer();
-		// Not sure if start() is required anymore, but it shouldn't hurt
-		autonStateTimer.start();
 	}
 
 	@Override
@@ -207,552 +118,123 @@ public class Robot extends IterativeRobot  {
     	case leftAuto:
     		if (gameData.length() > 0) {
 				if (gameData.charAt(0) == 'L') {
-					autonState = LLsoltrue;
-
-				} else if (gameData.charAt(0) == 'R') { // right
-					autonState = LRsoltrue;
+					if (autoTimer.get() < 2.25) {
+						myDrive.arcadeDrive(.75, .3); 
+				    	raiseTimer.start();
+					} else {
+					 	myDrive.arcadeDrive(0,0);
+					} if (raiseTimer.get() < .2) {
+						raiseSpark.set(-1);
+						liftTimer.start();
+					} else {
+						raiseSpark.set(0);
+					}
+					} if (liftTimer.get() < 1) {
+						liftSpark.set(1);
+						pneuTimer.start();
+					} else {
+						liftSpark.set(0);
+					} if (pneuTimer.get() < .1) {
+						solenoid.set(false);
+						sol2.set(true);
+					} else {
+						sol2.set(false);
+					} 
+    		}
+				else if (gameData.charAt(0) == 'R') { // right
+					if (autoTimer.get() < 2.25) {
+						myDrive.arcadeDrive(.75,  .3);
+					} else {
+						myDrive.arcadeDrive(0, 0);
+					}
 				} 
             break;
     		}
-    	case rightAuto: 
+           case rightAuto: 
 			if (gameData.length() > 0) {
 				if (gameData.charAt(0) == 'L') {
-					autonState = RLsoltrue;
-
+					if (autoTimer.get() < 2.25) {
+						myDrive.arcadeDrive(.75,  .3);
+					} else {
+						myDrive.arcadeDrive(0, 0);
+					}
 				} else if (gameData.charAt(0) == 'R') {
-					autonState = RRsoltrue;
-				}
+					if (autoTimer.get() < 2.25) {
+						myDrive.arcadeDrive(.75, .3);
+						raiseTimer.start();
+					} else {
+						myDrive.arcadeDrive(0,0);
+					} if (raiseTimer.get() < .2) {
+						raiseSpark.set(-1);
+						liftTimer.start();
+					} else {
+						raiseSpark.set(0);
+					} if (liftTimer.get() < 1) {
+						liftSpark.set(1);
+						pneuTimer.start();
+					} else {
+						liftSpark.set(0);
+					} if (pneuTimer.get() < .1) {
+						solenoid.set(false);
+						sol2.set(true);
+					} else {
+						sol2.set(false);
+					}
 				break;
-			}
-		
-
-    		break;
+				}
     	case centerAuto:
     		if (gameData.length() > 0) {
 				if (gameData.charAt(0) == 'L') {
-					autonState = CLsoltrue;
-
+					if (autoTimer.get() < 2.3) {
+						myDrive.arcadeDrive(.75, -.7);
+						liftTimer.start();
+					} else {
+						myDrive.arcadeDrive(0,0);
+					}
+					if (liftTimer.get() < 1) {
+						liftSpark.set(1);
+						pneuTimer.start();
+					} else {
+						liftSpark.set(0);
+					}
+					if  (pneuTimer.get() < .1) {
+						sol2.set(true);
+					} else {
+						sol2.set(false);
+					}
 				} else if (gameData.charAt(0) == 'R') {
-					autonState = CRsoltrue;
+					if (autoTimer.get() < 2.3) {
+						myDrive.arcadeDrive(.75, -.7);
+						liftTimer.start();
+					} else {
+						myDrive.arcadeDrive(0,0);
+					}
+					if (liftTimer.get() < 1) {
+						liftSpark.set(1);
+						pneuTimer.start();
+					} else {
+						liftSpark.set(0);
+					}
+					if  (pneuTimer.get() < .1) {
+						sol2.set(true);
+					} else {
+						sol2.set(false);
+					}
 				}
 				break;
 			}
     		break;
     	case baseline:
-    		if (autoTimer.get() < 3.0) {
+    		if (autoTimer.get() < 2.25) {
     			myDrive.arcadeDrive(.75, .3);
     		} else {
     			myDrive.arcadeDrive(0, 0);
     		}
                 break;
-        	}
-switch (autonState) {
-    	
-    	case LLsoltrue: {
-    		// Drive forward at half power for 3 seconds
-    		solenoid.set(true);
-    		if (autonStateTimer.hasPeriodPassed(.1)) {
-    			changeAutonState(2);
-    		}
-    		break;
-    	}
+			}
 
-    	case LLdrive1: {
-    		myDrive(0.75, 0.3);
-    		if (autonStateTimer.hasPeriodPassed(2.25)) {
-    			changeAutonState(3);
-    		}
-    		break;
-    	}
-case LLright: {
-    		myDrive(.5, 1);
-    		if (autonStateTimer.hasPeriodPassed(.25)) {
-    			changeAutonState(4);
-    		}
-    		break;
-    	}
-case LLliftup: {
-	liftSpark.set(1);
-	if (autonStateTimer.hasPeriodPassed(2)) {
-		changeAutonState(5);
-	}
-	break;
-}
-case LLdriveoff: {
-	myDrive(0,0);
-	if (autonStateTimer.hasPeriodPassed(.05)) {
-		changeAutonState(6);
-	}
-	break;
-}
-case LLliftoff: {
-	liftSpark.set(0);
-	if (autonStateTimer.hasPeriodPassed(.05)) {
-		changeAutonState(7);
-	}
-	break;
-}
-case LLsolfalse: {
-	solenoid.set(false);
-	if (autonStateTimer.hasPeriodPassed(.05)) {
-		changeAutonState(8);
-	}
-	break;
-}
-case LLsol2true: {
-	sol2.set(true);
-	if (autonStateTimer.hasPeriodPassed(.1)) {
-		changeAutonState(9);
-	}
-	break;
-}
-case LLsol2false: {
-	sol2.set(false);
-	if (autonStateTimer.hasPeriodPassed(.05)) {
-		changeAutonState(69);
-	}
-	break;
-}
-
-
-
-case LRsoltrue: {
-	solenoid.set(true);
-	if (autonStateTimer.hasPeriodPassed(.1)) {
-		changeAutonState(10);
-	}
-	break;
-}
-	case LRdrive1: {
-	myDrive(1, .3);
-	if (autonStateTimer.hasPeriodPassed(3)) {
-		changeAutonState(11);
-	}
-	break;
-}
-	case LRright1: {
-	myDrive(.5, 1);
-	if (autonStateTimer.hasPeriodPassed(.25)) {
-		changeAutonState(12);
-	}
-	break;
-}
-    	case LRdrive2: {
-    		myDrive(1, .3);
-    		if (autonStateTimer.hasPeriodPassed(2.25)) {
-    			changeAutonState(13);
-    		}
-    		break;
-    	}
-case LRright2: {
-    		myDrive(.75, 3);
-    		if (autonStateTimer.hasPeriodPassed(.25)) {
-    			changeAutonState(14);
-    		}
-    		break;
-    	}
-case LRdrive3: {
-	myDrive(1, .3);
-	if (autonStateTimer.hasPeriodPassed(.75)) {
-		changeAutonState(15);
-	}
-	break;
-}
-case LRleft1: {
-	myDrive(.75, -1);
-	if (autonStateTimer.hasPeriodPassed(.25)) {
-		changeAutonState(16);
-	}
-	break;
-}
-case LRdriveoff: {
-	myDrive(0,0);
-	if (autonStateTimer.hasPeriodPassed(.01)) {
-		changeAutonState(17);
-	}
-	break;
-}
-case LRliftup: {
-	liftSpark.set(1);
-	if (autonStateTimer.hasPeriodPassed(3)) {
-		changeAutonState(18);
-	}
-	break;
-}
-case LRliftoff: {
-	liftSpark.set(0);
-	if (autonStateTimer.hasPeriodPassed(.01)) {
-		changeAutonState(19);
-	}
-	break;
-}
-case LRsolfalse: {
-	solenoid.set(false);
-	if (autonStateTimer.hasPeriodPassed(.01)) {
-		changeAutonState(20);
-	}
-	break;
-}
-case LRsol2true: {
-	sol2.set(true);
-	if (autonStateTimer.hasPeriodPassed(.1)) {
-		changeAutonState(21);
-	}
-	break;
-}
-case LRsol2false: {
-	sol2.set(false);
-	if (autonStateTimer.hasPeriodPassed(.01)) {
-		changeAutonState(69);
-	}
-	break;
-}
-
-
-/*case RRsoltrue: {
+         }
 	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(23);
-	}
-	break;
-}
-case RRdrive1: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(24);
-	}
-	break;
-}
-case RRleft: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(25);
-	}
-	break;
-}
-case RRliftup: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(26);
-	}
-	break;
-}
-case RRdriveoff: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(27);
-	}
-	break;
-}
-case RRliftoff: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(28);
-	}
-	break;
-}
-case RRsolfalse: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(29);
-	}
-	break;
-}
-case RRsol2true: {
-	
-	if (autonStateTimer.hasPeriodPassed(.2)) {
-		changeAutonState(30);
-	}
-	break;
-}
-case RRsol2false: {
-	
-	if (autonStateTimer.hasPeriodPassed(.2)) {
-		changeAutonState(69);
-	}
-	break;
-}
-
-
-
-case RLsoltrue: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(33);
-	}
-	break;
-}
-case RLdrive1: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(34);
-	}
-	break;
-}
-case RLleft1: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(35);
-	}
-	break;
-}
-case RLdrive2: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(36);
-	}
-	break;
-}
-case RLleft2: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(37);
-	}
-	break;
-}
-case RLdrive3: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(38);
-	}
-	break;
-}
-case RLright1: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(39);
-	}
-	break;
-}
-case RLdriveoff: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(40);
-	}
-	break;
-}
-case RLliftup: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(41);
-	}
-	break;
-}
-case RLliftoff: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(42);
-	}
-	break;
-}
-case RLsolfalse: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(43);
-	}
-	break;
-}
-case RLsol2true: {
-	
-	if (autonStateTimer.hasPeriodPassed(.2)) {
-		changeAutonState(44);
-	}
-	break;
-}
-case RLsol2false: {
-	
-	if (autonStateTimer.hasPeriodPassed(.2)) {
-		changeAutonState(69);
-	}
-	break;
-}
-*/
-
-case CLsoltrue: {
-	solenoid.set(true);
-	if (autonStateTimer.hasPeriodPassed(.1)) {
-		changeAutonState(45);
-	}
-	break;
-}
-case CLleft1: {
-	myDrive(.75, -1);
-	if (autonStateTimer.hasPeriodPassed(.25)) {
-		changeAutonState(46);
-	}
-	break;
-}
-case CLdrive1: {
-	myDrive(1, .3);
-	if (autonStateTimer.hasPeriodPassed(1.2)) {
-		changeAutonState(47);
-	}
-	break;
-}
-case CLright1: {
-	myDrive(.75, .3);
-	if (autonStateTimer.hasPeriodPassed(.25)) {
-		changeAutonState(48);
-	}
-	break;
-}
-case CLdrive2: {
-	myDrive(1, .3);
-	if (autonStateTimer.hasPeriodPassed(1)) {
-		changeAutonState(49);
-	}
-	break;
-}
-case CLright2: {
-	myDrive(.75, .3);
-	if (autonStateTimer.hasPeriodPassed(.25)) {
-		changeAutonState(50);
-	}
-	break;
-}
-case CLdriveoff: {
-	myDrive(0,0);
-	if (autonStateTimer.hasPeriodPassed(.01)) {
-		changeAutonState(52);
-	}
-	break;
-}
-case CLliftup: {
-	liftSpark.set(1);
-	if (autonStateTimer.hasPeriodPassed(2)) {
-		changeAutonState(53);
-	}
-	break;
-}
-case CLliftoff: {
-	liftSpark.set(0);;
-	if (autonStateTimer.hasPeriodPassed(.01)) {
-		changeAutonState(54);
-	}
-	break;
-}
-case CLsolfalse: {
-	solenoid.set(false);
-	if (autonStateTimer.hasPeriodPassed(.01)) {
-		changeAutonState(55);
-	}
-	break;
-}
-case CLsol2true: {
-	sol2.set(true);
-	if (autonStateTimer.hasPeriodPassed(.1)) {
-		changeAutonState(56);
-	}
-	break;
-}
-case CLsol2false: {
-	sol2.set(false);
-	if (autonStateTimer.hasPeriodPassed(.01)) {
-		changeAutonState(69);
-	}
-	break;
-}
-
-/*
-case CR: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(57);
-	}
-	break;
-}
-case CR: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(58);
-	}
-	break;
-}
-case CR: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(59);
-	}
-	break;
-}
-case CR: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(60);
-	}
-	break;
-}
-case CR: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(61);
-	}
-	break;
-}
-case CR: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(62);
-	}
-	break;
-}
-case CR: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(63);
-	}
-	break;
-}
-case CR: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(64);
-	}
-	break;
-}
-case CR: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(65);
-	}
-	break;
-}
-case CR: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(66);
-	}
-	break;
-}
-case CR: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(67);
-	}
-	break;
-}
-case CR: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(68);
-	}
-	break;
-}
-case CR: {
-	
-	if (autonStateTimer.hasPeriodPassed()) {
-		changeAutonState(69);
-	}
-	break;
-}
-
-*/
-    	case autodone: {
-    		myDrive(0,0);
-    		break;
-    	}
-    	}
-		}
 
 	private void myDrive(double d, double e) {
 		// TODO Auto-generated method stub
@@ -772,7 +254,7 @@ case CR: {
 
 			comp.setClosedLoopControl(true);
 
-			double c1 = pdp.getCurrent(1);
+		/*	double c1 = pdp.getCurrent(1);
 			double c2 = pdp.getCurrent(2);
 			double c3 = pdp.getCurrent(3);
 			double c4 = pdp.getCurrent(4);
@@ -781,19 +263,19 @@ case CR: {
 			SmartDashboard.putNumber("spark 2", c2);
 			SmartDashboard.putNumber("spark 3", c3);
 			SmartDashboard.putNumber("spark 4", c3);
-			SmartDashboard.putNumber("voltage", v);
+			SmartDashboard.putNumber("voltage", v);*/
 
 			double rightStickValue = xbox.getRawAxis(5);
 			liftSpark.set(rightStickValue);
 			
-			if (xbox.getBumperPressed(Hand.kLeft)) {
+			if (xbox.getBumper(Hand.kLeft)) {
 				endSpark.set(1);
 				endSpark2.set(1);
 			} else if (xbox.getBumperReleased(Hand.kLeft)) {
 				endSpark.set(0);
 				endSpark2.set(0);
 			}
-			if (xbox.getBumperPressed(Hand.kRight)) {
+			if (xbox.getBumper(Hand.kRight)) {
 				endSpark.set(-1);
 				endSpark2.set(-1);
 			} else if (xbox.getBumperReleased(Hand.kRight)) {
@@ -802,9 +284,13 @@ case CR: {
 			}
 			if (xbox.getXButton()) {
 				raiseSpark.set(1);
+			} else if (xbox.getXButtonReleased()) {
+				raiseSpark.set(0);
 			}
 			if (xbox.getYButton()) {
 				raiseSpark.set(-1);
+			} else if (xbox.getYButtonReleased()) {
+				raiseSpark.set(0);
 			}
 			if (endSwitch.get()) {
 				liftSpark.set(-1);
