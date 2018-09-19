@@ -112,129 +112,14 @@ public class Robot extends IterativeRobot  {
 
 	@Override
 	public void autonomousPeriodic() {
-		String gameData;
-		gameData = DriverStation.getInstance().getGameSpecificMessage();
-		switch(autoSelected) {
-    	case leftAuto:
-    		if (gameData.length() > 0) {
-				if (gameData.charAt(0) == 'L') {
-					if (autoTimer.get() < 2.25) {
-						myDrive.arcadeDrive(.75, .3); 
-				    	raiseTimer.start();
-					} else {
-					 	myDrive.arcadeDrive(0,0);
-					} if (raiseTimer.get() < .2) {
-						raiseSpark.set(-1);
-						liftTimer.start();
-					} else {
-						raiseSpark.set(0);
-					}
-					} if (liftTimer.get() < 1) {
-						liftSpark.set(1);
-						pneuTimer.start();
-					} else {
-						liftSpark.set(0);
-					} if (pneuTimer.get() < .1) {
-						solenoid.set(false);
-						sol2.set(true);
-					} else {
-						sol2.set(false);
-					} 
-    		}
-				else if (gameData.charAt(0) == 'R') { // right
-					if (autoTimer.get() < 2.25) {
-						myDrive.arcadeDrive(.75,  .3);
-					} else {
-						myDrive.arcadeDrive(0, 0);
-					}
-				} 
-            break;
-    		}
-           case rightAuto: 
-			if (gameData.length() > 0) {
-				if (gameData.charAt(0) == 'L') {
-					if (autoTimer.get() < 2.25) {
-						myDrive.arcadeDrive(.75,  .3);
-					} else {
-						myDrive.arcadeDrive(0, 0);
-					}
-				} else if (gameData.charAt(0) == 'R') {
-					if (autoTimer.get() < 2.25) {
-						myDrive.arcadeDrive(.75, .3);
-						raiseTimer.start();
-					} else {
-						myDrive.arcadeDrive(0,0);
-					} if (raiseTimer.get() < .2) {
-						raiseSpark.set(-1);
-						liftTimer.start();
-					} else {
-						raiseSpark.set(0);
-					} if (liftTimer.get() < 1) {
-						liftSpark.set(1);
-						pneuTimer.start();
-					} else {
-						liftSpark.set(0);
-					} if (pneuTimer.get() < .1) {
-						solenoid.set(false);
-						sol2.set(true);
-					} else {
-						sol2.set(false);
-					}
-				break;
-				}
-    	case centerAuto:
-    		if (gameData.length() > 0) {
-				if (gameData.charAt(0) == 'L') {
-					if (autoTimer.get() < 2.3) {
-						myDrive.arcadeDrive(.75, -.7);
-						liftTimer.start();
-					} else {
-						myDrive.arcadeDrive(0,0);
-					}
-					if (liftTimer.get() < 1) {
-						liftSpark.set(1);
-						pneuTimer.start();
-					} else {
-						liftSpark.set(0);
-					}
-					if  (pneuTimer.get() < .1) {
-						sol2.set(true);
-					} else {
-						sol2.set(false);
-					}
-				} else if (gameData.charAt(0) == 'R') {
-					if (autoTimer.get() < 2.3) {
-						myDrive.arcadeDrive(.75, -.7);
-						liftTimer.start();
-					} else {
-						myDrive.arcadeDrive(0,0);
-					}
-					if (liftTimer.get() < 1) {
-						liftSpark.set(1);
-						pneuTimer.start();
-					} else {
-						liftSpark.set(0);
-					}
-					if  (pneuTimer.get() < .1) {
-						sol2.set(true);
-					} else {
-						sol2.set(false);
-					}
-				}
-				break;
-			}
-    		break;
-    	case baseline:
+		
     		if (autoTimer.get() < 2.25) {
     			myDrive.arcadeDrive(.75, .3);
     		} else {
     			myDrive.arcadeDrive(0, 0);
-    		}
-                break;
-			}
+    		}}
 
-         }
-	
+    
 
 	private void myDrive(double d, double e) {
 		// TODO Auto-generated method stub
